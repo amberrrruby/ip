@@ -1,4 +1,6 @@
-# Duke User Guide
+# Clara User Guide
+
+**TODO: This will be populated as the project grows.**
 
 // Update the title above to match the actual product name
 
