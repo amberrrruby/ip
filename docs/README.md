@@ -30,3 +30,7 @@ expected output
 ## Feature XYZ
 
 // Feature details
+
+## Echoing commands
+
+Clara echoes each command entered by the user. Enter `bye` to exit the application.
