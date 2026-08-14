@@ -60,6 +60,24 @@ public class Clara {
     System.out.println(echoString);
   }
 
+  private void deleteTask(List<Task> tasks, final int taskIndex) throws ClaraException {
+    if (taskIndex <= 0 || taskIndex > tasks.size()) {
+      throw new ClaraException("Index out of bounds: given is " + taskIndex);
+    }
+    Task theTask = tasks.remove(taskIndex - 1);
+    String echoString =
+        "\n[Clara] deleted task "
+            + taskIndex
+            + ":\n| "
+            + theTask
+            + " ("
+            + tasks.size()
+            + " task"
+            + (tasks.size() == 1 ? " " : "s ")
+            + "remain)";
+    System.out.println(echoString);
+  }
+
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     Clara clara = new Clara();
@@ -95,6 +113,10 @@ public class Clara {
             int taskIdxToUnmark = Parser.parseTaskIdx(command, arguments);
             clara.unmarkTask(tasks, taskIdxToUnmark);
           }
+          case "delete" -> {
+            int taskIdxToDelete = Parser.parseTaskIdx(command, arguments);
+            clara.deleteTask(tasks, taskIdxToDelete);
+          }
           case "todo" -> {
             Todo todo = Parser.parseTodo(arguments);
             clara.addAndPrintTask(tasks, todo);
@@ -112,7 +134,7 @@ public class Clara {
           }
         }
       } catch (ClaraException ex) {
-        System.out.println("\n[Clara] Something went wrong: " + ex.getMessage() + "\nTry again.");
+        System.out.println("\n[Clara] Something went wrong:\n" + ex.getMessage() + "\nTry again.");
       }
     }
 
