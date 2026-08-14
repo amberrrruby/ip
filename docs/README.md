@@ -8,32 +8,19 @@
 
 // Product intro goes here
 
-## Adding deadlines
+## Listing tasks
 
-// Describe the action and its outcome.
+Enter `list` to display all added tasks in order.
 
-// Give examples of usage
+## Adding tasks
 
-Example: `keyword (optional arguments)`
+Add a task using one of these commands:
 
-// A description of the expected outcome goes here
+- `todo <description>` — a task without a date or time.
+- `deadline <description> /by <time>` — a task due by a specified time.
+- `event <description> /from <start-time> /to <end-time>` — a task with start and end times.
 
-```
-expected output
-```
-
-## Feature ABC
-
-// Feature details
-
-
-## Feature XYZ
-
-// Feature details
-
-## Adding and listing tasks
-
-Enter any text to add it as a task. Enter `list` to display all added tasks in order.
+Dates and times are stored as text.
 
 ## Marking tasks as done
 

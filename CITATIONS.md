@@ -33,6 +33,22 @@ just point to the entry by ID.
 - **Notes:** Small change to show a user-facing error for non-numeric `mark` or `unmark` indexes.
 - **Status:** Pending
 
+### [C-002] Task-command syntax validation
+- **Type:** AI-generated
+- **Location:** `src/main/java/Parser.java` — task command parsing methods
+- **Source:** Codex AI assistance
+- **Citation format:** comment only
+- **Notes:** Validation for blank descriptions and malformed deadline/event delimiters.
+- **Status:** Pending
+
+### [C-003] Consistent leading newline for Clara messages
+- **Type:** AI-generated
+- **Location:** `src/main/java/Clara.java` — farewell and error output
+- **Source:** Codex AI assistance
+- **Citation format:** comment only
+- **Notes:** Adds a leading newline to remaining Clara-prefixed messages.
+- **Status:** Pending
+
 
 ---
 
