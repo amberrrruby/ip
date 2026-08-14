@@ -70,7 +70,7 @@ public class Clara {
     boolean terminate = false;
     while (!terminate) {
       System.out.print(">> ");
-      final String[] userInput = scanner.nextLine().split(" ", 2);
+      final String[] userInput = scanner.nextLine().trim().split("\\s+", 2);
       if (userInput[0].isEmpty()) {
         continue;
       }
@@ -88,11 +88,11 @@ public class Clara {
             clara.printList(tasks);
           }
           case "mark" -> {
-            int taskIdxToMark = Parser.parseTaskIdx(arguments);
+            int taskIdxToMark = Parser.parseTaskIdx(command, arguments);
             clara.markTask(tasks, taskIdxToMark);
           }
           case "unmark" -> {
-            int taskIdxToUnmark = Parser.parseTaskIdx(arguments);
+            int taskIdxToUnmark = Parser.parseTaskIdx(command, arguments);
             clara.unmarkTask(tasks, taskIdxToUnmark);
           }
           case "todo" -> {
@@ -112,11 +112,7 @@ public class Clara {
           }
         }
       } catch (ClaraException ex) {
-        System.out.println("\n[Clara] Something went wrong: " + ex + "\nTry again.");
-      } catch (NumberFormatException ex) {
-        // INFO: AI-assisted invalid-index input validation. See CITATIONS.md [C-001].
-        System.out.println(
-            "\n[Clara] Something went wrong: task number must be an integer.\nTry again.");
+        System.out.println("\n[Clara] Something went wrong: " + ex.getMessage() + "\nTry again.");
       }
     }
 

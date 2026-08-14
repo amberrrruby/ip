@@ -6,8 +6,14 @@ public class Parser {
     }
   }
 
-  public static int parseTaskIdx(String arguments) throws NumberFormatException {
-    return Integer.parseInt(arguments);
+  public static int parseTaskIdx(final String command, final String arguments)
+      throws ClaraException {
+    try {
+      return Integer.parseInt(arguments);
+    } catch (NumberFormatException ex) {
+      // INFO: Used to be AI-assisted invalid-index input validation. See CITATIONS.md [C-001].
+      throw new ClaraException("Use: " + command + " <task number>.");
+    }
   }
 
   // NOTE: AI-assisted task-command input validation. See CITATIONS.md [C-002].
