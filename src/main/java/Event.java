@@ -2,10 +2,10 @@ public class Event extends Task {
   private String fromTime;
   private String toTime;
 
-  public Deadline(String taskName, String fromTime, String toTime) {
+  public Event(String taskName, String fromTime, String toTime) {
+    super(taskName);
     this.fromTime = fromTime;
     this.toTime = toTime;
-    super(taskName);
   }
 
   public String getFromTime() {

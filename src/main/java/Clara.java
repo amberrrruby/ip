@@ -8,8 +8,9 @@ public class Clara {
     System.out.println(greetingLine);
   }
 
+  // AI-assisted output formatting. See CITATIONS.md [C-003]
   public void end() {
-    String exitLine = "[Clara] Goodbye. See you again.";
+    String exitLine = "\n[Clara] Goodbye. See you again.";
     System.out.println(exitLine);
   }
 
@@ -25,24 +26,20 @@ public class Clara {
     }
   }
 
-  private void addAndPrintTask(List<Task> tasks, final String[] userInput) {
-    String taskName = String.join(" ", userInput);
-    tasks.add(new Task(taskName));
-    String echoString = "\n[Clara] added: " + taskName;
+  private void addAndPrintTask(List<Task> tasks, final Task task) {
+    tasks.add(task);
+    String echoString = "\n[Clara] added:\n| " + task.toString() + " (task #" + tasks.size() + ")";
     System.out.println(echoString);
   }
 
   private void markTask(List<Task> tasks, final int taskIndex) throws ClaraException {
     if (taskIndex <= 0 || taskIndex > tasks.size()) {
-      throw new ClaraException("Index out of bounds: given is " + Integer.toString(taskIndex));
+      throw new ClaraException("Index out of bounds: given is " + taskIndex);
     }
     Task theTask = tasks.get(taskIndex - 1);
     if (theTask.getIsDone()) {
       throw new ClaraException(
-          "Task "
-              + Integer.toString(taskIndex)
-              + " has already been marked:\n| "
-              + theTask.getTaskName());
+          "Task " + taskIndex + " has already been marked:\n| " + theTask.getTaskName());
     }
     theTask.setIsDone(true);
     String echoString = "\n[Clara] marked task " + taskIndex + ":\n| " + theTask.toString();
@@ -51,32 +48,16 @@ public class Clara {
 
   private void unmarkTask(List<Task> tasks, final int taskIndex) throws ClaraException {
     if (taskIndex <= 0 || taskIndex > tasks.size()) {
-      throw new ClaraException("Index out of bounds: given is " + Integer.toString(taskIndex));
+      throw new ClaraException("Index out of bounds: given is " + taskIndex);
     }
     Task theTask = tasks.get(taskIndex - 1);
     if (!theTask.getIsDone()) {
       throw new ClaraException(
-          "Task "
-              + Integer.toString(taskIndex)
-              + " has already been unmarked:\n| "
-              + theTask.getTaskName());
+          "Task " + taskIndex + " has already been unmarked:\n| " + theTask.getTaskName());
     }
     theTask.setIsDone(false);
     String echoString = "\n[Clara] unmarked task " + taskIndex + ":\n| " + theTask.toString();
     System.out.println(echoString);
-  }
-
-  private static void assertArgumentCount(final String[] userInput, final int correctNumber)
-      throws ClaraException {
-    if (userInput.length - 1 != correctNumber) {
-      throw new ClaraException(
-          "Incorrect number of arguments passed to "
-              + userInput[0]
-              + ":\n| expected "
-              + Integer.toString(correctNumber)
-              + ", got: "
-              + Integer.toString(userInput.length - 1));
-    }
   }
 
   public static void main(String[] args) {
@@ -89,38 +70,53 @@ public class Clara {
     boolean terminate = false;
     while (!terminate) {
       System.out.print(">> ");
-      final String[] userInput = scanner.nextLine().split(" ");
+      final String[] userInput = scanner.nextLine().split(" ", 2);
+      if (userInput[0].isEmpty()) {
+        continue;
+      }
 
       try {
-        switch (userInput[0]) {
+        String command = userInput[0];
+        String arguments = userInput.length == 2 ? userInput[1] : "";
+        switch (command) {
           case "bye" -> {
-            assertArgumentCount(userInput, 0);
+            Parser.requireNoArguments(command, arguments);
             terminate = true;
           }
           case "list" -> {
-            assertArgumentCount(userInput, 0);
+            Parser.requireNoArguments(command, arguments);
             clara.printList(tasks);
           }
           case "mark" -> {
-            assertArgumentCount(userInput, 1);
-            int taskIdxToMark = Integer.parseInt(userInput[1]);
+            int taskIdxToMark = Parser.parseTaskIdx(arguments);
             clara.markTask(tasks, taskIdxToMark);
           }
           case "unmark" -> {
-            assertArgumentCount(userInput, 1);
-            int taskIdxToUnmark = Integer.parseInt(userInput[1]);
+            int taskIdxToUnmark = Parser.parseTaskIdx(arguments);
             clara.unmarkTask(tasks, taskIdxToUnmark);
           }
+          case "todo" -> {
+            Todo todo = Parser.parseTodo(arguments);
+            clara.addAndPrintTask(tasks, todo);
+          }
+          case "deadline" -> {
+            Deadline deadline = Parser.parseDeadline(arguments);
+            clara.addAndPrintTask(tasks, deadline);
+          }
+          case "event" -> {
+            Event event = Parser.parseEvent(arguments);
+            clara.addAndPrintTask(tasks, event);
+          }
           default -> {
-            clara.addAndPrintTask(tasks, userInput);
+            throw new ClaraException("Unknown command: " + command);
           }
         }
       } catch (ClaraException ex) {
-        System.out.println("[Clara] Something went wrong: " + ex + "\nTry again.");
-        // INFO: AI-assisted invalid-index input validation. See CITATIONS.md [C-001].
+        System.out.println("\n[Clara] Something went wrong: " + ex + "\nTry again.");
       } catch (NumberFormatException ex) {
+        // INFO: AI-assisted invalid-index input validation. See CITATIONS.md [C-001].
         System.out.println(
-            "[Clara] Something went wrong: task number must be an integer.\nTry again.");
+            "\n[Clara] Something went wrong: task number must be an integer.\nTry again.");
       }
     }
 

@@ -2,8 +2,8 @@ public class Deadline extends Task {
   private String deadlineTime;
 
   public Deadline(String taskName, String deadlineTime) {
-    this.deadlineTime = deadlineTime;
     super(taskName);
+    this.deadlineTime = deadlineTime;
   }
 
   public String getDeadlineTime() {
