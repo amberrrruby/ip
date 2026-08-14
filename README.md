@@ -12,15 +12,6 @@ A simple command-line personal assistant chatbot built in Java as part of the NU
 
 ### Running the Application
 
-The application currently consists of a single Java source file:
-
-```text
-src/
-└── main/
-    └── java/
-        └── Clara.java
-```
-
 Run (or, compile and run) `Clara.java` from your IDE or using the Java 25 compiler/runtime:
 
 ```bash
@@ -37,19 +28,22 @@ The project will gradually be expanded as new functionality is introduced.
 ```text
 .
 ├── docs/
-│   └── README.md/      # Guide targeted for users
+│   └── README.md       # Guide targeted for users
 ├── src/
 │   └── main/
-│       └── java/       # Application source code
+│       └── java/
+│           ├── Clara.java          # Application entry point and command handling
+│           ├── ClaraException.java # User-input exception
+│           └── Task.java           # To-do task model
 ├── .gitignore
 ├── AGENTS.md           # Instructions for AI coding agents
 ├── CLAUDE.md           # For Claude Code (redirects to `AGENTS.md`)
 ├── CONTRIBUTORS.md     # List of contributors to the project
+├── CITATIONS.md        # Citation tracking
+├── CITATION_RULES.md   # Citation requirements and guidance
 ├── PROJECT.md          # Description of the project, **intended for AI coding agents**
 └── README.md           # Project documentation
 ```
-
-Up till Level 2, `src/main/java/` contains only `Clara.java`. The other directories and files will be introduced as the project grows.
 
 ### Project Guidelines
 
@@ -59,7 +53,7 @@ The [CS2103/T Project Duke specification](https://nus-cs2103-ay2627-s1.github.io
 
 ## Status
 
-This project is currently at: **Level 2**. It will be developed incrementally throughout the iP.
+This project is currently at: **Level 3**. It will be developed incrementally throughout the iP.
 
 
 *Level 0 README: Generated and modified from a [ChatGPT chat thread](https://chatgpt.com/share/6a7dd837-21bc-83ec-824e-6ab1b746ac1f).*
