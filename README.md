@@ -1,8 +1,8 @@
 # Project Clara
 
-**TODO: This will be further populated as the codebase grows.**
-
 A simple command-line personal assistant chatbot built in Java as part of the NUS CS2103/T Individual Project.
+
+Clara currently supports adding, listing, marking, unmarking, and deleting tasks.
 
 ## Getting Started
 
@@ -53,7 +53,7 @@ The [CS2103/T Project Duke specification](https://nus-cs2103-ay2627-s1.github.io
 
 ## Status
 
-This project is currently at: **Level 4**. It will be developed incrementally throughout the iP.
+This project is currently at: **Level 6**. It will be developed incrementally throughout the iP.
 
 
 *Level 0 README: Generated and modified from a [ChatGPT chat thread](https://chatgpt.com/share/6a7dd837-21bc-83ec-824e-6ab1b746ac1f).*

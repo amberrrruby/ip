@@ -1,12 +1,6 @@
 # Clara User Guide
 
-**TODO: This will be populated as the project grows.**
-
-// Update the title above to match the actual product name
-
-// Product screenshot goes here
-
-// Product intro goes here
+Clara is a command-line personal assistant that manages a list of tasks.
 
 ## Listing tasks
 
@@ -26,6 +20,15 @@ Dates and times are stored as text.
 
 Enter `mark <task-number>` to mark a task as done, or `unmark <task-number>` to mark a task as not done.
 The task number is the number shown in the output of doing `list`.
+
+## Deleting tasks
+
+Enter `delete <task-number>` to remove a task from the list.
+The task number is the number shown in the output of doing `list`.
+
+## Handling invalid commands
+
+Clara explains invalid commands and inputs, then lets you try again. For example, `delete` without a valid task number displays the required command format.
 
 ## Exiting the app
 
