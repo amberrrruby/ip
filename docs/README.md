@@ -31,6 +31,13 @@ expected output
 
 // Feature details
 
-## Echoing commands
+## Adding and listing tasks
 
-Clara echoes each command entered by the user. Enter `bye` to exit the application.
+Enter any text to add it as a task. Enter `list` to display all added tasks in order.
+
+## Exiting the app
+
+Enter `bye` to exit the app.
+
+
+*Co-maintained by Codex.*

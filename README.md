@@ -28,7 +28,7 @@ javac Clara.java
 java Clara
 ```
 
-At the current stage, the program starts by printing a greeting message, echoes the command that the user typed, then prints an ending message when typed `bye`.
+Refer to the user guide `/docs/README.md` for supported behaviour.
 
 ## Project Structure
 
@@ -49,7 +49,7 @@ The project will gradually be expanded as new functionality is introduced.
 └── README.md           # Project documentation
 ```
 
-Up till Level 1, `src/main/java/` contains only `Clara.java`. The other directories and files will be introduced as the project grows.
+Up till Level 2, `src/main/java/` contains only `Clara.java`. The other directories and files will be introduced as the project grows.
 
 ### Project Guidelines
 
@@ -59,7 +59,7 @@ The [CS2103/T Project Duke specification](https://nus-cs2103-ay2627-s1.github.io
 
 ## Status
 
-This project is currently at: **Level 1**. It will be developed incrementally throughout the iP.
+This project is currently at: **Level 2**. It will be developed incrementally throughout the iP.
 
 
 *Level 0 README: Generated and modified from a [ChatGPT chat thread](https://chatgpt.com/share/6a7dd837-21bc-83ec-824e-6ab1b746ac1f).*
