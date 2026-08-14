@@ -1,4 +1,4 @@
-# TODO_CITATIONS.md — Citation To-Do List
+# CITATIONS.md — Citation To-Do List
 
 Tracks items requiring citation under the course reuse policy.
 Rules and agent protocol are in CITATION_GUIDE.md.
@@ -25,13 +25,18 @@ just point to the entry by ID.
 
 ## Pending
 
+---
+
+## Done
+
+
 ### [C-001] Invalid task-index input validation
 - **Type:** AI-generated
 - **Location:** `src/main/java/Clara.java` — command error handling
 - **Source:** Codex AI assistance
 - **Citation format:** comment only
 - **Notes:** Small change to show a user-facing error for non-numeric `mark` or `unmark` indexes.
-- **Status:** Pending
+- **Status:** Approved, done
 
 ### [C-002] Task-command syntax validation
 - **Type:** AI-generated
@@ -39,7 +44,7 @@ just point to the entry by ID.
 - **Source:** Codex AI assistance
 - **Citation format:** comment only
 - **Notes:** Validation for blank descriptions and malformed deadline/event delimiters.
-- **Status:** Pending
+- **Status:** Approved, done
 
 ### [C-003] Consistent leading newline for Clara messages
 - **Type:** AI-generated
@@ -47,9 +52,4 @@ just point to the entry by ID.
 - **Source:** Codex AI assistance
 - **Citation format:** comment only
 - **Notes:** Adds a leading newline to remaining Clara-prefixed messages.
-- **Status:** Pending
-
-
----
-
-## Done
+- **Status:** Approved, done
