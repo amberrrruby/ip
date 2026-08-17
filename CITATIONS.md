@@ -53,3 +53,11 @@ just point to the entry by ID.
 - **Citation format:** comment only
 - **Notes:** Adds a leading newline to remaining Clara-prefixed messages.
 - **Status:** Approved, done
+
+### [C-004] Task persistence and saved-task parsing
+- **Type:** AI-generated
+- **Location:** `src/main/java/TodoFileHandler.java` — task serialization, parsing, loading, and saving methods
+- **Source:** Codex AI assistance and https://chatgpt.com/share/6a801443-b818-83ec-9c19-d1e74a1bc7e9
+- **Citation format:** comment only
+- **Notes:** Assistance with the delimited save-file format, validation, and Java NIO buffered file I/O.
+- **Status:** Approved, done

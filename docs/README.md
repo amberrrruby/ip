@@ -15,6 +15,7 @@ Add a task using one of these commands:
 - `event <description> /from <start-time> /to <end-time>` — a task with start and end times.
 
 Dates and times are stored as text.
+The character `|` is reserved for Clara's save format and cannot be used in task details.
 
 ## Marking tasks as done
 
@@ -25,6 +26,10 @@ The task number is the number shown in the output of doing `list`.
 
 Enter `delete <task-number>` to remove a task from the list.
 The task number is the number shown in the output of doing `list`.
+
+## Saving tasks
+
+Clara automatically saves the task list after you add, mark, unmark, or delete a task. When Clara starts, it restores the previously saved task list.
 
 ## Handling invalid commands
 

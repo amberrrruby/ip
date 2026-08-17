@@ -26,8 +26,9 @@ public class Clara {
     }
   }
 
-  private void addAndPrintTask(List<Task> tasks, final Task task) {
+  private void addAndPrintTask(List<Task> tasks, final Task task) throws ClaraException {
     tasks.add(task);
+    TodoFileHandler.flushTasksToDisk(tasks);
     String echoString = "\n[Clara] added:\n| " + task.toString() + " (task #" + tasks.size() + ")";
     System.out.println(echoString);
   }
@@ -42,6 +43,7 @@ public class Clara {
           "Task " + taskIndex + " has already been marked:\n| " + theTask.getTaskName());
     }
     theTask.setIsDone(true);
+    TodoFileHandler.flushTasksToDisk(tasks);
     String echoString = "\n[Clara] marked task " + taskIndex + ":\n| " + theTask.toString();
     System.out.println(echoString);
   }
@@ -56,6 +58,7 @@ public class Clara {
           "Task " + taskIndex + " has already been unmarked:\n| " + theTask.getTaskName());
     }
     theTask.setIsDone(false);
+    TodoFileHandler.flushTasksToDisk(tasks);
     String echoString = "\n[Clara] unmarked task " + taskIndex + ":\n| " + theTask.toString();
     System.out.println(echoString);
   }
@@ -65,6 +68,7 @@ public class Clara {
       throw new ClaraException("Index out of bounds: given is " + taskIndex);
     }
     Task theTask = tasks.remove(taskIndex - 1);
+    TodoFileHandler.flushTasksToDisk(tasks);
     String echoString =
         "\n[Clara] deleted task "
             + taskIndex
@@ -84,6 +88,16 @@ public class Clara {
     clara.greet();
 
     List<Task> tasks = new ArrayList<>(100);
+    try {
+      System.out.println("\n[Clara] Loading tasks...");
+      TodoFileHandler.loadTasksFromDisk(tasks);
+      System.out.println("\n[Clara] Done.");
+    } catch (ClaraException ex) {
+      System.out.println(
+          "\n[Clara] Something went wrong while loading tasks:\n"
+              + ex.getMessage()
+              + "\nTasks will not be loaded, and we'll start clean.");
+    }
 
     boolean terminate = false;
     while (!terminate) {
