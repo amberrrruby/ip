@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/** Handles saving and loading tasks to and from Clara's task data file. */
 public class TodoFileHandler {
   private static final Path FILE_PATH = Path.of("data", "todo-list.txt");
   private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
@@ -21,8 +22,12 @@ public class TodoFileHandler {
    * status ::= "x" | "o"
    * </pre>
    *
-   * Todo tasks leave {@code time1} and {@code time2} empty; deadline tasks leave {@code time2}
-   * empty. Titles and times must not contain {@code |} or a line break.
+   * <p>Todo tasks leave {@code time1} and {@code time2} empty, while deadline tasks leave {@code
+   * time2} empty.
+   *
+   * @param line the serialized task line to parse
+   * @return the task represented by the given line
+   * @throws ClaraException if the line is malformed or contains invalid task data
    */
   private static Task parseLine(final String line) throws ClaraException {
     if (line.isBlank()) {
@@ -69,6 +74,13 @@ public class TodoFileHandler {
   }
 
   // AI-assisted task serialization. See CITATIONS.md [C-004].
+  /**
+   * Converts a task into its serialized file representation.
+   *
+   * @param task the task to serialize
+   * @return a single line representing the task in the saved-task format
+   * @throws IllegalArgumentException if the task is not a supported subclass of {@link Task}
+   */
   private static String taskToFileLine(final Task task) {
     return switch (task) {
       case Todo todo -> "t|" + (todo.getIsDone() ? "x" : "o") + "|" + todo.getTaskName() + "||";
@@ -94,6 +106,13 @@ public class TodoFileHandler {
   }
 
   // AI-assisted buffered file saving. See CITATIONS.md [C-004].
+  /**
+   * Saves all tasks to the task data file, replacing any previously saved tasks.
+   *
+   * @param tasks the list of tasks to save
+   * @throws ClaraException if the directory cannot be created or the tasks cannot be written to the
+   *     file
+   */
   public static void flushTasksToDisk(final List<Task> tasks) throws ClaraException {
     try {
       Files.createDirectories(FILE_PATH.getParent());
@@ -110,6 +129,15 @@ public class TodoFileHandler {
   }
 
   // AI-assisted buffered file loading. See CITATIONS.md [C-004].
+  /**
+   * Loads saved tasks from the task data file into the given list.
+   *
+   * <p>If the data file does not exist, the list is left unchanged. Otherwise, the existing
+   * contents of the list are cleared before the saved tasks are loaded.
+   *
+   * @param tasks the list into which saved tasks are loaded
+   * @throws ClaraException if the saved task file cannot be read
+   */
   public static void loadTasksFromDisk(List<Task> tasks) throws ClaraException {
     if (!Files.exists(FILE_PATH)) {
       return;
