@@ -42,7 +42,7 @@ public class Event extends Task {
    */
   @Override
   public String toString() {
-    // TODO: add citations: https://chatgpt.com/share/6a8013d9-a11c-83ec-9940-edc0bf614544
+    // NOTE: AI-assisted `LocalDateTime` pattern implementation. See CITATIONS.md [C-005].
     DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
 
     return "[E]"

@@ -33,7 +33,7 @@ public class Parser {
     try {
       return Integer.parseInt(arguments);
     } catch (NumberFormatException ex) {
-      // INFO: Used to be AI-assisted invalid-index input validation. See CITATIONS.md [C-001].
+      // NOTE: Used to be AI-assisted invalid-index input validation. See CITATIONS.md [C-001].
       throw new ClaraException("Use: " + command + " <task number>.");
     }
   }
@@ -73,7 +73,7 @@ public class Parser {
       throw new ClaraException("Use: deadline <name> /by <time>.");
     }
 
-    // TODO: add citations: https://chatgpt.com/share/6a8013d9-a11c-83ec-9940-edc0bf614544
+    // NOTE: AI-assisted `LocalDateTime` pattern implementation. See CITATIONS.md [C-005].
     try {
       LocalDateTime deadline = LocalDateTime.parse(nameAndTime[1], formatter);
       return new Deadline(nameAndTime[0], deadline);
@@ -105,7 +105,7 @@ public class Parser {
       throw new ClaraException("Use: event <name> /from <time> /to <time>.");
     }
 
-    // TODO: add citations: https://chatgpt.com/share/6a8013d9-a11c-83ec-9940-edc0bf614544
+    // NOTE: AI-assisted `LocalDateTime` pattern implementation. See CITATIONS.md [C-005].
     try {
       LocalDateTime fromTime = LocalDateTime.parse(fromTimeAndToTime[0], formatter);
       LocalDateTime toTime = LocalDateTime.parse(fromTimeAndToTime[1], formatter);

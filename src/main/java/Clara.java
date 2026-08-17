@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 /** Represents the main application for Clara, a simple task management chatbot. */
 public class Clara {
@@ -119,6 +121,33 @@ public class Clara {
     System.out.println(echoString);
   }
 
+  // NOTE: AI-assisted task find implementation. See CITATIONS.md [C-006].
+  /**
+   * Finds and prints tasks whose names contain the given argument.
+   *
+   * @param tasks the list of tasks to search
+   * @param argument the search term
+   */
+  private void findAndPrintTasks(List<Task> tasks, String argument) {
+    Pattern pattern = Pattern.compile(Pattern.quote(argument));
+
+    System.out.println("\n[Clara] Finding tasks with task names containing: " + argument);
+
+    List<Integer> matchingIndices =
+        IntStream.range(0, tasks.size())
+            .filter(i -> pattern.matcher(tasks.get(i).getTaskName()).find())
+            .boxed()
+            .toList();
+
+    for (int i = 0; i < matchingIndices.size(); i++) {
+      int originalIndex = matchingIndices.get(i);
+      System.out.println((originalIndex + 1) + ". " + tasks.get(originalIndex));
+    }
+
+    System.out.println(
+        matchingIndices.size() + " task" + (matchingIndices.size() == 1 ? " " : "s ") + " found.");
+  }
+
   /**
    * Starts the Clara application, loads saved tasks, and processes user commands.
    *
@@ -180,6 +209,9 @@ public class Clara {
           case "deadline" -> {
             Deadline deadline = Parser.parseDeadline(arguments);
             clara.addAndPrintTask(tasks, deadline);
+          }
+          case "find" -> {
+            clara.findAndPrintTasks(tasks, arguments);
           }
           case "event" -> {
             Event event = Parser.parseEvent(arguments);
