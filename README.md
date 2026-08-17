@@ -32,9 +32,14 @@ The project will gradually be expanded as new functionality is introduced.
 ├── src/
 │   └── main/
 │       └── java/
-│           ├── Clara.java          # Application entry point and command handling
-│           ├── ClaraException.java # User-input exception
-│           └── Task.java           # To-do task model
+│           ├── Clara.java           # Application entry point and command handling
+│           ├── ClaraException.java  # User-input exception
+│           ├── Deadline.java        # Deadline task model
+│           ├── Event.java           # Event task model
+│           ├── Parser.java          # User command parser (not to be confused with file-facing parser, see below)
+│           ├── Task.java            # Base task model
+│           ├── Todo.java            # To-do task model
+│           └── TodoFileHandler.java # To-do list file / IO handler and parser
 ├── .gitignore
 ├── AGENTS.md           # Instructions for AI coding agents
 ├── CLAUDE.md           # For Claude Code (redirects to `AGENTS.md`)
@@ -53,7 +58,7 @@ The [CS2103/T Project Duke specification](https://nus-cs2103-ay2627-s1.github.io
 
 ## Status
 
-This project is currently at: **Level 7**. It will be developed incrementally throughout the iP.
+This project is currently at: **Level 8**. It will be developed incrementally throughout the iP.
 
 
 *Level 0 README: Generated and modified from a [ChatGPT chat thread](https://chatgpt.com/share/6a7dd837-21bc-83ec-824e-6ab1b746ac1f).*

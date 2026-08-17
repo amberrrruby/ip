@@ -14,7 +14,8 @@ Add a task using one of these commands:
 - `deadline <description> /by <time>` — a task due by a specified time.
 - `event <description> /from <start-time> /to <end-time>` — a task with start and end times.
 
-Dates and times are stored as text.
+Times must be of the format `yyyy-MM-dd HHmm`. Internally they are also stored that way.
+
 The character `|` is reserved for Clara's save format and cannot be used in task details.
 
 ## Marking tasks as done
