@@ -84,7 +84,7 @@ public class Clara {
     System.out.println(echoString);
   }
 
-  // TODO: add citation https://chatgpt.com/share/6a8023ed-204c-83ec-a9a8-3b4df596f31d
+  // NOTE: AI-assisted task find implementation. See CITATIONS.md [C-006].
   private void findAndPrintTasks(List<Task> tasks, String argument) {
     Pattern pattern = Pattern.compile(Pattern.quote(argument));
 

@@ -61,3 +61,19 @@ just point to the entry by ID.
 - **Citation format:** comment only
 - **Notes:** Assistance with the delimited save-file format, validation, and Java NIO buffered file I/O.
 - **Status:** Approved, done
+
+### [C-005] `LocalDateTime` methods and patterns
+- **Type:** AI-generated
+- **Location:** `src/main/java/Parser.java` — parsing user input into `LocalDateTime`; `src/main/java/Deadline.java`, `src/main/java/Event.java` — formatting `LocalDateTime`
+- **Source:** https://chatgpt.com/share/6a8013d9-a11c-83ec-9940-edc0bf614544
+- **Citation format:** comment only
+- **Notes:** Assistance with looking up class methods and demonstrating implementation patterns.
+- **Status:** Done
+
+### [C-006] Task find implementation
+- **Type:** AI-generated
+- **Location:** `src/main/java/Clara.java` — task finding method
+- **Source:** https://chatgpt.com/share/6a8023ed-204c-83ec-a9a8-3b4df596f31d
+- **Citation format:** comment only
+- **Notes:** Assistance with implementing task find and functional pattern.
+- **Status:** Done

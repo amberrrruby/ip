@@ -58,7 +58,7 @@ The [CS2103/T Project Duke specification](https://nus-cs2103-ay2627-s1.github.io
 
 ## Status
 
-This project is currently at: **Level 8**. It will be developed incrementally throughout the iP.
+This project is currently at: **Level 9**. It will be developed incrementally throughout the iP.
 
 
 *Level 0 README: Generated and modified from a [ChatGPT chat thread](https://chatgpt.com/share/6a7dd837-21bc-83ec-824e-6ab1b746ac1f).*

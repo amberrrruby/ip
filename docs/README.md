@@ -32,6 +32,10 @@ The task number is the number shown in the output of doing `list`.
 
 Clara automatically saves the task list after you add, mark, unmark, or delete a task. When Clara starts, it restores the previously saved task list.
 
+## Finding tasks
+
+Enter `task <target>` to find tasks with names containing the search target.
+
 ## Handling invalid commands
 
 Clara explains invalid commands and inputs, then lets you try again. For example, `delete` without a valid task number displays the required command format.
