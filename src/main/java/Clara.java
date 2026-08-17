@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 public class Clara {
   public void greet() {
@@ -82,6 +84,27 @@ public class Clara {
     System.out.println(echoString);
   }
 
+  // TODO: add citation https://chatgpt.com/share/6a8023ed-204c-83ec-a9a8-3b4df596f31d
+  private void findAndPrintTasks(List<Task> tasks, String argument) {
+    Pattern pattern = Pattern.compile(Pattern.quote(argument));
+
+    System.out.println("\n[Clara] Finding tasks with task names containing: " + argument);
+
+    List<Integer> matchingIndices =
+        IntStream.range(0, tasks.size())
+            .filter(i -> pattern.matcher(tasks.get(i).getTaskName()).find())
+            .boxed()
+            .toList();
+
+    for (int i = 0; i < matchingIndices.size(); i++) {
+      int originalIndex = matchingIndices.get(i);
+      System.out.println((originalIndex + 1) + ". " + tasks.get(originalIndex));
+    }
+
+    System.out.println(
+        matchingIndices.size() + " task" + (matchingIndices.size() == 1 ? " " : "s ") + " found.");
+  }
+
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     Clara clara = new Clara();
@@ -138,6 +161,9 @@ public class Clara {
           case "deadline" -> {
             Deadline deadline = Parser.parseDeadline(arguments);
             clara.addAndPrintTask(tasks, deadline);
+          }
+          case "find" -> {
+            clara.findAndPrintTasks(tasks, arguments);
           }
           case "event" -> {
             Event event = Parser.parseEvent(arguments);
