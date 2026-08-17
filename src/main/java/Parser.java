@@ -21,11 +21,18 @@ public class Parser {
     if (arguments.isBlank()) {
       throw new ClaraException("A todo needs a description.");
     }
+    if (arguments.indexOf('|') != -1) {
+      throw new ClaraException("The character '|' is reserved and cannot be used in task details.");
+    }
     return new Todo(arguments);
   }
 
   public static Deadline parseDeadline(String arguments) throws ClaraException {
+    if (arguments.indexOf('|') != -1) {
+      throw new ClaraException("The character '|' is reserved and cannot be used in task details.");
+    }
     String[] nameAndTime = arguments.split(" /by ", 2);
+
     if (nameAndTime.length != 2 || nameAndTime[0].isBlank() || nameAndTime[1].isBlank()) {
       throw new ClaraException("Use: deadline <name> /by <time>.");
     }
@@ -33,6 +40,9 @@ public class Parser {
   }
 
   public static Event parseEvent(String arguments) throws ClaraException {
+    if (arguments.indexOf('|') != -1) {
+      throw new ClaraException("The character '|' is reserved and cannot be used in task details.");
+    }
     String[] nameAndRest = arguments.split(" /from ", 2);
     if (nameAndRest.length != 2 || nameAndRest[0].isBlank()) {
       throw new ClaraException("Use: event <name> /from <time> /to <time>.");
