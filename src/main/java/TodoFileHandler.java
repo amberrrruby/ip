@@ -3,10 +3,13 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TodoFileHandler {
   private static final Path FILE_PATH = Path.of("data", "todo-list.txt");
+  private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
   // AI-assisted saved-task format and validation. See CITATIONS.md [C-004].
   /**
@@ -48,13 +51,16 @@ public class TodoFileHandler {
             if (arguments[3].isBlank() || !arguments[4].isEmpty()) {
               throw new ClaraException("Saved deadline task has invalid times.");
             }
-            yield new Deadline(arguments[2], arguments[3]);
+            yield new Deadline(arguments[2], LocalDateTime.parse(arguments[3], formatter));
           }
           case "e" -> {
             if (arguments[3].isBlank() || arguments[4].isBlank()) {
               throw new ClaraException("Saved event task needs start and end times.");
             }
-            yield new Event(arguments[2], arguments[3], arguments[4]);
+            yield new Event(
+                arguments[2],
+                LocalDateTime.parse(arguments[3], formatter),
+                LocalDateTime.parse(arguments[4], formatter));
           }
           default -> throw new ClaraException("Saved task has an unknown type.");
         };
@@ -72,7 +78,7 @@ public class TodoFileHandler {
               + "|"
               + deadline.getTaskName()
               + "|"
-              + deadline.getDeadlineTime()
+              + deadline.getDeadlineTime().format(formatter)
               + "|";
       case Event event ->
           "e|"
@@ -80,9 +86,9 @@ public class TodoFileHandler {
               + "|"
               + event.getTaskName()
               + "|"
-              + event.getFromTime()
+              + event.getFromTime().format(formatter)
               + "|"
-              + event.getToTime();
+              + event.getToTime().format(formatter);
       default -> throw new IllegalArgumentException("Unknown subclass of Task encountered");
     };
   }
