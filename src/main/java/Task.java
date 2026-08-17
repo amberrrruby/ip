@@ -21,11 +21,11 @@ public class Task {
     this.taskName = newTaskName;
   }
 
-  public boolean getIsDone() {
+  public boolean isDone() {
     return this.isDone;
   }
 
-  public void setIsDone(boolean newIsDone) {
+  public void setDone(boolean newIsDone) {
     this.isDone = newIsDone;
   }
 

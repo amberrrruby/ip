@@ -28,7 +28,7 @@ public class Parser {
    * @return the parsed one-based task index
    * @throws ClaraException if the arguments do not contain a valid integer
    */
-  public static int parseTaskIdx(final String command, final String arguments)
+  public static int parseTaskIndex(final String command, final String arguments)
       throws ClaraException {
     try {
       return Integer.parseInt(arguments);
