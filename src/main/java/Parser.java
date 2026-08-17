@@ -12,7 +12,7 @@ public class Parser {
     }
   }
 
-  public static int parseTaskIdx(final String command, final String arguments)
+  public static int parseTaskIndex(final String command, final String arguments)
       throws ClaraException {
     try {
       return Integer.parseInt(arguments);

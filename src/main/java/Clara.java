@@ -38,11 +38,11 @@ public class Clara {
       throw new ClaraException("Index out of bounds: given is " + taskIndex);
     }
     Task theTask = tasks.get(taskIndex - 1);
-    if (theTask.getIsDone()) {
+    if (theTask.isDone()) {
       throw new ClaraException(
           "Task " + taskIndex + " has already been marked:\n| " + theTask.getTaskName());
     }
-    theTask.setIsDone(true);
+    theTask.setDone(true);
     TodoFileHandler.flushTasksToDisk(tasks);
     String echoString = "\n[Clara] marked task " + taskIndex + ":\n| " + theTask.toString();
     System.out.println(echoString);
@@ -53,11 +53,11 @@ public class Clara {
       throw new ClaraException("Index out of bounds: given is " + taskIndex);
     }
     Task theTask = tasks.get(taskIndex - 1);
-    if (!theTask.getIsDone()) {
+    if (!theTask.isDone()) {
       throw new ClaraException(
           "Task " + taskIndex + " has already been unmarked:\n| " + theTask.getTaskName());
     }
-    theTask.setIsDone(false);
+    theTask.setDone(false);
     TodoFileHandler.flushTasksToDisk(tasks);
     String echoString = "\n[Clara] unmarked task " + taskIndex + ":\n| " + theTask.toString();
     System.out.println(echoString);
@@ -120,16 +120,16 @@ public class Clara {
             clara.printList(tasks);
           }
           case "mark" -> {
-            int taskIdxToMark = Parser.parseTaskIdx(command, arguments);
-            clara.markTask(tasks, taskIdxToMark);
+            int taskIndexToMark = Parser.parseTaskIndex(command, arguments);
+            clara.markTask(tasks, taskIndexToMark);
           }
           case "unmark" -> {
-            int taskIdxToUnmark = Parser.parseTaskIdx(command, arguments);
-            clara.unmarkTask(tasks, taskIdxToUnmark);
+            int taskIndexToUnmark = Parser.parseTaskIndex(command, arguments);
+            clara.unmarkTask(tasks, taskIndexToUnmark);
           }
           case "delete" -> {
-            int taskIdxToDelete = Parser.parseTaskIdx(command, arguments);
-            clara.deleteTask(tasks, taskIdxToDelete);
+            int taskIndexToDelete = Parser.parseTaskIndex(command, arguments);
+            clara.deleteTask(tasks, taskIndexToDelete);
           }
           case "todo" -> {
             Todo todo = Parser.parseTodo(arguments);

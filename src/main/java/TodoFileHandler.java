@@ -64,17 +64,17 @@ public class TodoFileHandler {
           }
           default -> throw new ClaraException("Saved task has an unknown type.");
         };
-    task.setIsDone(arguments[1].equals("x"));
+    task.setDone(arguments[1].equals("x"));
     return task;
   }
 
   // AI-assisted task serialization. See CITATIONS.md [C-004].
   private static String taskToFileLine(final Task task) {
     return switch (task) {
-      case Todo todo -> "t|" + (todo.getIsDone() ? "x" : "o") + "|" + todo.getTaskName() + "||";
+      case Todo todo -> "t|" + (todo.isDone() ? "x" : "o") + "|" + todo.getTaskName() + "||";
       case Deadline deadline ->
           "d|"
-              + (deadline.getIsDone() ? "x" : "o")
+              + (deadline.isDone() ? "x" : "o")
               + "|"
               + deadline.getTaskName()
               + "|"
@@ -82,7 +82,7 @@ public class TodoFileHandler {
               + "|";
       case Event event ->
           "e|"
-              + (event.getIsDone() ? "x" : "o")
+              + (event.isDone() ? "x" : "o")
               + "|"
               + event.getTaskName()
               + "|"
