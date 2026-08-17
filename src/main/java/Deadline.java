@@ -1,9 +1,16 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/** Represents a task with a deadline. */
 public class Deadline extends Task {
   private LocalDateTime deadlineTime;
 
+  /**
+   * Creates a deadline task with the specified name and deadline.
+   *
+   * @param taskName the name of the task
+   * @param deadlineTime the deadline of the task
+   */
   public Deadline(String taskName, LocalDateTime deadlineTime) {
     super(taskName);
     this.deadlineTime = deadlineTime;
@@ -17,6 +24,11 @@ public class Deadline extends Task {
     this.deadlineTime = newDeadlineTime;
   }
 
+  /**
+   * Returns a string representation of this deadline task, including its deadline.
+   *
+   * @return a formatted string representing this deadline task
+   */
   @Override
   public String toString() {
     // TODO: add citations: https://chatgpt.com/share/6a8013d9-a11c-83ec-9940-edc0bf614544

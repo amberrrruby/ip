@@ -1,10 +1,18 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/** Represents an event task with a start time and an end time. */
 public class Event extends Task {
   private LocalDateTime fromTime;
   private LocalDateTime toTime;
 
+  /**
+   * Creates an event with the specified name, start time, and end time.
+   *
+   * @param taskName the name of the event
+   * @param fromTime the start time of the event
+   * @param toTime the end time of the event
+   */
   public Event(String taskName, LocalDateTime fromTime, LocalDateTime toTime) {
     super(taskName);
     this.fromTime = fromTime;
@@ -27,6 +35,11 @@ public class Event extends Task {
     this.toTime = newToTime;
   }
 
+  /**
+   * Returns a string representation of this event, including its start and end times.
+   *
+   * @return a formatted string representing this event
+   */
   @Override
   public String toString() {
     // TODO: add citations: https://chatgpt.com/share/6a8013d9-a11c-83ec-9940-edc0bf614544

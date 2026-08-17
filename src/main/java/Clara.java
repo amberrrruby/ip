@@ -2,18 +2,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/** Represents the main application for Clara, a simple task management chatbot. */
 public class Clara {
+
+  /** Displays Clara's greeting message to the user. */
   public void greet() {
     String greetingLine = "\n[Clara] Hello. I'm Clara. How can I assist you?";
     System.out.println(greetingLine);
   }
 
   // AI-assisted output formatting. See CITATIONS.md [C-003]
+  /** Displays Clara's goodbye message to the user. */
   public void end() {
     String exitLine = "\n[Clara] Goodbye. See you again.";
     System.out.println(exitLine);
   }
 
+  /**
+   * Displays all tasks in the given list.
+   *
+   * @param tasks the list of tasks to display
+   */
   private void printList(final List<Task> tasks) {
     if (tasks.size() > 0) {
       System.out.println("\n[Clara] Here are your tasks in a list:");
@@ -26,6 +35,13 @@ public class Clara {
     }
   }
 
+  /**
+   * Adds a task to the task list, saves the updated list, and displays a confirmation.
+   *
+   * @param tasks the list to which the task is added
+   * @param task the task to add
+   * @throws ClaraException if the updated task list cannot be saved
+   */
   private void addAndPrintTask(List<Task> tasks, final Task task) throws ClaraException {
     tasks.add(task);
     TodoFileHandler.flushTasksToDisk(tasks);
@@ -33,6 +49,13 @@ public class Clara {
     System.out.println(echoString);
   }
 
+  /**
+   * Marks the specified task as completed, saves the updated list, and displays a confirmation.
+   *
+   * @param tasks the list containing the task
+   * @param taskIndex the one-based index of the task to mark
+   * @throws ClaraException if the task index is invalid or the task is already marked
+   */
   private void markTask(List<Task> tasks, final int taskIndex) throws ClaraException {
     if (taskIndex <= 0 || taskIndex > tasks.size()) {
       throw new ClaraException("Index out of bounds: given is " + taskIndex);
@@ -48,6 +71,13 @@ public class Clara {
     System.out.println(echoString);
   }
 
+  /**
+   * Marks the specified task as incomplete, saves the updated list, and displays a confirmation.
+   *
+   * @param tasks the list containing the task
+   * @param taskIndex the one-based index of the task to unmark
+   * @throws ClaraException if the task index is invalid or the task is already unmarked
+   */
   private void unmarkTask(List<Task> tasks, final int taskIndex) throws ClaraException {
     if (taskIndex <= 0 || taskIndex > tasks.size()) {
       throw new ClaraException("Index out of bounds: given is " + taskIndex);
@@ -63,6 +93,13 @@ public class Clara {
     System.out.println(echoString);
   }
 
+  /**
+   * Deletes the specified task, saves the updated list, and displays a confirmation.
+   *
+   * @param tasks the list containing the task
+   * @param taskIndex the one-based index of the task to delete
+   * @throws ClaraException if the task index is invalid
+   */
   private void deleteTask(List<Task> tasks, final int taskIndex) throws ClaraException {
     if (taskIndex <= 0 || taskIndex > tasks.size()) {
       throw new ClaraException("Index out of bounds: given is " + taskIndex);
@@ -82,6 +119,11 @@ public class Clara {
     System.out.println(echoString);
   }
 
+  /**
+   * Starts the Clara application, loads saved tasks, and processes user commands.
+   *
+   * @param args command-line arguments passed to the application
+   */
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     Clara clara = new Clara();
