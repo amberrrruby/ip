@@ -1,21 +1,27 @@
-public class Deadline extends Task {
-  private String deadlineTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-  public Deadline(String taskName, String deadlineTime) {
+public class Deadline extends Task {
+  private LocalDateTime deadlineTime;
+
+  public Deadline(String taskName, LocalDateTime deadlineTime) {
     super(taskName);
     this.deadlineTime = deadlineTime;
   }
 
-  public String getDeadlineTime() {
+  public LocalDateTime getDeadlineTime() {
     return this.deadlineTime;
   }
 
-  public void setDeadlineTime(String newDeadlineTime) {
+  public void setDeadlineTime(LocalDateTime newDeadlineTime) {
     this.deadlineTime = newDeadlineTime;
   }
 
   @Override
   public String toString() {
-    return "[D]" + super.toString() + " (by: " + this.deadlineTime + ")";
+    // TODO: add citations: https://chatgpt.com/share/6a8013d9-a11c-83ec-9940-edc0bf614544
+    DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+
+    return "[D]" + super.toString() + " (by: " + this.deadlineTime.format(displayFormatter) + ")";
   }
 }
