@@ -102,3 +102,21 @@ just point to the entry by ID.
 - **Notes:** Refactored `Clara.main` to coordinate `Ui`, `TaskList`, `Parser`, and `TodoFileHandler`.
 - **Status:** Done
 
+### [C-010] JUnit test suite implementation
+- **Type:** AI-generated
+- **Location:** `src/test/java/clara/parser/ParserTest.java`, `src/test/java/clara/task/TaskListTest.java`, `src/test/java/clara/task/DeadlineTest.java`, `src/test/java/clara/task/TodoTest.java`, `src/test/java/clara/task/EventTest.java`
+- **Source:** Antigravity AI assistance
+- **Citation format:** comment only
+- **Notes:** Creation of JUnit 5 test classes for `Parser`, `TaskList`, and task models (`Deadline`, `Todo`, `Event`).
+- **Status:** Done
+
+### [C-011] Explicit Locale in DateTimeFormatter
+- **Type:** AI-generated
+- **Location:** `src/main/java/clara/task/Deadline.java`, `src/main/java/clara/task/Event.java` — `toString` date formatting
+- **Source:** Antigravity AI assistance
+- **Citation format:** comment only
+- **Notes:** Added `Locale.US` to `DateTimeFormatter.ofPattern` to ensure consistent English month names across different system locales.
+- **Status:** Done
+
+
+

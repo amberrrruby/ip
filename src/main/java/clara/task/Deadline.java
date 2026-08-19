@@ -2,6 +2,7 @@ package clara.task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Represents a task with a deadline.
@@ -36,7 +37,8 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         // NOTE: AI-assisted `LocalDateTime` pattern implementation. See CITATIONS.md [C-005].
-        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+        // NOTE: AI-assisted `Locale` specification for date formatting. See CITATIONS.md [C-011].
+        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a", Locale.US);
 
         return "[D]" + super.toString() + " (by: " + this.deadlineTime.format(displayFormatter) + ")";
     }
