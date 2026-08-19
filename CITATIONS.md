@@ -32,7 +32,7 @@ just point to the entry by ID.
 
 ### [C-001] Invalid task-index input validation
 - **Type:** AI-generated
-- **Location:** `src/main/java/Clara.java` — command error handling
+- **Location:** `src/main/java/clara/Clara.java` — command error handling
 - **Source:** Codex AI assistance
 - **Citation format:** comment only
 - **Notes:** Small change to show a user-facing error for non-numeric `mark` or `unmark` indexes.
@@ -40,7 +40,7 @@ just point to the entry by ID.
 
 ### [C-002] Task-command syntax validation
 - **Type:** AI-generated
-- **Location:** `src/main/java/Parser.java` — task command parsing methods
+- **Location:** `src/main/java/clara/parser/Parser.java` — task command parsing methods
 - **Source:** Codex AI assistance
 - **Citation format:** comment only
 - **Notes:** Validation for blank descriptions and malformed deadline/event delimiters.
@@ -48,7 +48,7 @@ just point to the entry by ID.
 
 ### [C-003] Consistent leading newline for Clara messages
 - **Type:** AI-generated
-- **Location:** `src/main/java/Clara.java` — farewell and error output
+- **Location:** `src/main/java/clara/Clara.java` — farewell and error output
 - **Source:** Codex AI assistance
 - **Citation format:** comment only
 - **Notes:** Adds a leading newline to remaining Clara-prefixed messages.
@@ -56,7 +56,7 @@ just point to the entry by ID.
 
 ### [C-004] Task persistence and saved-task parsing
 - **Type:** AI-generated
-- **Location:** `src/main/java/TodoFileHandler.java` — task serialization, parsing, loading, and saving methods
+- **Location:** `src/main/java/clara/storage/TodoFileHandler.java` — task serialization, parsing, loading, and saving methods
 - **Source:** Codex AI assistance and https://chatgpt.com/share/6a801443-b818-83ec-9c19-d1e74a1bc7e9
 - **Citation format:** comment only
 - **Notes:** Assistance with the delimited save-file format, validation, and Java NIO buffered file I/O.
@@ -64,7 +64,7 @@ just point to the entry by ID.
 
 ### [C-005] `LocalDateTime` methods and patterns
 - **Type:** AI-generated
-- **Location:** `src/main/java/Parser.java` — parsing user input into `LocalDateTime`; `src/main/java/Deadline.java`, `src/main/java/Event.java` — formatting `LocalDateTime`
+- **Location:** `src/main/java/clara/parser/Parser.java` — parsing user input into `LocalDateTime`; `src/main/java/Deadline.java`, `src/main/java/Event.java` — formatting `LocalDateTime`
 - **Source:** https://chatgpt.com/share/6a8013d9-a11c-83ec-9940-edc0bf614544
 - **Citation format:** comment only
 - **Notes:** Assistance with looking up class methods and demonstrating implementation patterns.
@@ -72,7 +72,7 @@ just point to the entry by ID.
 
 ### [C-006] Task find implementation
 - **Type:** AI-generated
-- **Location:** `src/main/java/Clara.java` — task finding method
+- **Location:** `src/main/java/clara/Clara.java` — task finding method
 - **Source:** https://chatgpt.com/share/6a8023ed-204c-83ec-a9a8-3b4df596f31d
 - **Citation format:** comment only
 - **Notes:** Assistance with implementing task find and functional pattern.
@@ -80,7 +80,7 @@ just point to the entry by ID.
 
 ### [C-007] `TaskList` extraction and collection operations
 - **Type:** AI-generated
-- **Location:** `src/main/java/TaskList.java` — task collection management operations
+- **Location:** `src/main/java/clara/task/TaskList.java` — task collection management operations
 - **Source:** Antigravity AI assistance
 - **Citation format:** comment only
 - **Notes:** Extraction and refactoring of `TaskList` to encapsulate task collection operations decoupled from UI and storage.
@@ -88,7 +88,7 @@ just point to the entry by ID.
 
 ### [C-008] `Ui` console interaction extraction
 - **Type:** AI-generated
-- **Location:** `src/main/java/Ui.java` — user interaction, command reading, and message formatting methods
+- **Location:** `src/main/java/clara/ui/Ui.java` — user interaction, command reading, and message formatting methods
 - **Source:** Antigravity AI assistance
 - **Citation format:** comment only
 - **Notes:** Extraction and implementation of `Ui` class for centralized console input/output formatting.
@@ -96,7 +96,7 @@ just point to the entry by ID.
 
 ### [C-009] Main application loop refactoring
 - **Type:** AI-generated
-- **Location:** `src/main/java/Clara.java` — `main` method application loop
+- **Location:** `src/main/java/clara/Clara.java` — `main` method application loop
 - **Source:** Antigravity AI assistance
 - **Citation format:** comment only
 - **Notes:** Refactored `Clara.main` to coordinate `Ui`, `TaskList`, `Parser`, and `TodoFileHandler`.

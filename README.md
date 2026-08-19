@@ -15,8 +15,8 @@ Clara supports adding, listing, marking, unmarking, deleting, and automatically 
 Run (or, compile and run) `Clara.java` from your IDE or using the Java 25 compiler/runtime:
 
 ```bash
-javac Clara.java
-java Clara
+javac -sourcepath src/main/java src/main/java/clara/Clara.java
+java -cp src/main/java clara.Clara
 ```
 
 Refer to the user guide `/docs/README.md` for supported behaviour.
@@ -32,14 +32,22 @@ The project will gradually be expanded as new functionality is introduced.
 ├── src/
 │   └── main/
 │       └── java/
-│           ├── Clara.java           # Application entry point and command handling
-│           ├── ClaraException.java  # User-input exception
-│           ├── Deadline.java        # Deadline task model
-│           ├── Event.java           # Event task model
-│           ├── Parser.java          # User command parser (not to be confused with file-facing parser, see below)
-│           ├── Task.java            # Base task model
-│           ├── Todo.java            # To-do task model
-│           └── TodoFileHandler.java # To-do list file / IO handler and parser
+│           └── clara/
+│               ├── exception/
+│               │   └── ClaraException.java  # Application exceptions
+│               ├── parser/
+│               │   └── Parser.java          # User command parser
+│               ├── storage/
+│               │   └── TodoFileHandler.java # File persistence and parsing
+│               ├── task/
+│               │   ├── Deadline.java        # Deadline task model
+│               │   ├── Event.java           # Event task model
+│               │   ├── Task.java            # Base task model
+│               │   ├── TaskList.java        # Task list manager
+│               │   └── Todo.java            # To-do task model
+│               ├── ui/
+│               │   └── Ui.java              # User interaction and console output
+│               └── Clara.java               # Application entry point
 ├── .gitignore
 ├── AGENTS.md           # Instructions for AI coding agents
 ├── CLAUDE.md           # For Claude Code (redirects to `AGENTS.md`)
