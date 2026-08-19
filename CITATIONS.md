@@ -77,3 +77,28 @@ just point to the entry by ID.
 - **Citation format:** comment only
 - **Notes:** Assistance with implementing task find and functional pattern.
 - **Status:** Done
+
+### [C-007] `TaskList` extraction and collection operations
+- **Type:** AI-generated
+- **Location:** `src/main/java/TaskList.java` — task collection management operations
+- **Source:** Antigravity AI assistance
+- **Citation format:** comment only
+- **Notes:** Extraction and refactoring of `TaskList` to encapsulate task collection operations decoupled from UI and storage.
+- **Status:** Done
+
+### [C-008] `Ui` console interaction extraction
+- **Type:** AI-generated
+- **Location:** `src/main/java/Ui.java` — user interaction, command reading, and message formatting methods
+- **Source:** Antigravity AI assistance
+- **Citation format:** comment only
+- **Notes:** Extraction and implementation of `Ui` class for centralized console input/output formatting.
+- **Status:** Done
+
+### [C-009] Main application loop refactoring
+- **Type:** AI-generated
+- **Location:** `src/main/java/Clara.java` — `main` method application loop
+- **Source:** Antigravity AI assistance
+- **Citation format:** comment only
+- **Notes:** Refactored `Clara.main` to coordinate `Ui`, `TaskList`, `Parser`, and `TodoFileHandler`.
+- **Status:** Done
+
