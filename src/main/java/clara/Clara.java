@@ -49,57 +49,57 @@ public class Clara {
                 String command = userInput[0];
                 String arguments = userInput.length == 2 ? userInput[1] : "";
                 switch (command) {
-                case "bye" -> {
-                    Parser.requireNoArguments(command, arguments);
-                    terminate = true;
-                }
-                case "list" -> {
-                    Parser.requireNoArguments(command, arguments);
-                    ui.showTaskList(tasks);
-                }
-                case "mark" -> {
-                    int taskIndexToMark = Parser.parseTaskIndex(command, arguments);
-                    Task markedTask = tasks.markTask(taskIndexToMark);
-                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
-                    ui.showTaskMarked(markedTask, taskIndexToMark);
-                }
-                case "unmark" -> {
-                    int taskIndexToUnmark = Parser.parseTaskIndex(command, arguments);
-                    Task unmarkedTask = tasks.unmarkTask(taskIndexToUnmark);
-                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
-                    ui.showTaskUnmarked(unmarkedTask, taskIndexToUnmark);
-                }
-                case "delete" -> {
-                    int taskIndexToDelete = Parser.parseTaskIndex(command, arguments);
-                    Task deletedTask = tasks.deleteTask(taskIndexToDelete);
-                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
-                    ui.showTaskDeleted(deletedTask, taskIndexToDelete, tasks.size());
-                }
-                case "todo" -> {
-                    Todo todo = Parser.parseTodo(arguments);
-                    tasks.addTask(todo);
-                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
-                    ui.showTaskAdded(todo, tasks.size());
-                }
-                case "deadline" -> {
-                    Deadline deadline = Parser.parseDeadline(arguments);
-                    tasks.addTask(deadline);
-                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
-                    ui.showTaskAdded(deadline, tasks.size());
-                }
-                case "find" -> {
-                    List<Integer> matchingIndices = tasks.findMatchingIndices(arguments);
-                    ui.showFindResults(tasks, matchingIndices, arguments);
-                }
-                case "event" -> {
-                    Event event = Parser.parseEvent(arguments);
-                    tasks.addTask(event);
-                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
-                    ui.showTaskAdded(event, tasks.size());
-                }
-                default -> {
-                    throw new ClaraException("Unknown command: " + command);
-                }
+                    case "bye" -> {
+                        Parser.requireNoArguments(command, arguments);
+                        terminate = true;
+                    }
+                    case "list" -> {
+                        Parser.requireNoArguments(command, arguments);
+                        ui.showTaskList(tasks);
+                    }
+                    case "mark" -> {
+                        int taskIndexToMark = Parser.parseTaskIndex(command, arguments);
+                        Task markedTask = tasks.markTask(taskIndexToMark);
+                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                        ui.showTaskMarked(markedTask, taskIndexToMark);
+                    }
+                    case "unmark" -> {
+                        int taskIndexToUnmark = Parser.parseTaskIndex(command, arguments);
+                        Task unmarkedTask = tasks.unmarkTask(taskIndexToUnmark);
+                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                        ui.showTaskUnmarked(unmarkedTask, taskIndexToUnmark);
+                    }
+                    case "delete" -> {
+                        int taskIndexToDelete = Parser.parseTaskIndex(command, arguments);
+                        Task deletedTask = tasks.deleteTask(taskIndexToDelete);
+                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                        ui.showTaskDeleted(deletedTask, taskIndexToDelete, tasks.size());
+                    }
+                    case "todo" -> {
+                        Todo todo = Parser.parseTodo(arguments);
+                        tasks.addTask(todo);
+                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                        ui.showTaskAdded(todo, tasks.size());
+                    }
+                    case "deadline" -> {
+                        Deadline deadline = Parser.parseDeadline(arguments);
+                        tasks.addTask(deadline);
+                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                        ui.showTaskAdded(deadline, tasks.size());
+                    }
+                    case "find" -> {
+                        List<Integer> matchingIndices = tasks.findMatchingIndices(arguments);
+                        ui.showFindResults(tasks, matchingIndices, arguments);
+                    }
+                    case "event" -> {
+                        Event event = Parser.parseEvent(arguments);
+                        tasks.addTask(event);
+                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                        ui.showTaskAdded(event, tasks.size());
+                    }
+                    default -> {
+                        throw new ClaraException("Unknown command: " + command);
+                    }
                 }
             } catch (ClaraException ex) {
                 ui.displayErrorAtConsole(ex);

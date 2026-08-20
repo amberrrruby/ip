@@ -56,30 +56,30 @@ public class TodoFileHandler {
         }
 
         Task task =
-                switch (arguments[0]) {
-                    case "t" -> {
-                        if (!arguments[3].isEmpty() || !arguments[4].isEmpty()) {
-                            throw new ClaraException("Saved todo task must not have times.");
-                        }
-                        yield new Todo(arguments[2]);
+            switch (arguments[0]) {
+                case "t" -> {
+                    if (!arguments[3].isEmpty() || !arguments[4].isEmpty()) {
+                        throw new ClaraException("Saved todo task must not have times.");
                     }
-                    case "d" -> {
-                        if (arguments[3].isBlank() || !arguments[4].isEmpty()) {
-                            throw new ClaraException("Saved deadline task has invalid times.");
-                        }
-                        yield new Deadline(arguments[2], LocalDateTime.parse(arguments[3], formatter));
+                    yield new Todo(arguments[2]);
+                }
+                case "d" -> {
+                    if (arguments[3].isBlank() || !arguments[4].isEmpty()) {
+                        throw new ClaraException("Saved deadline task has invalid times.");
                     }
-                    case "e" -> {
-                        if (arguments[3].isBlank() || arguments[4].isBlank()) {
-                            throw new ClaraException("Saved event task needs start and end times.");
-                        }
-                        yield new Event(
-                                arguments[2],
-                                LocalDateTime.parse(arguments[3], formatter),
-                                LocalDateTime.parse(arguments[4], formatter));
+                    yield new Deadline(arguments[2], LocalDateTime.parse(arguments[3], formatter));
+                }
+                case "e" -> {
+                    if (arguments[3].isBlank() || arguments[4].isBlank()) {
+                        throw new ClaraException("Saved event task needs start and end times.");
                     }
-                    default -> throw new ClaraException("Saved task has an unknown type.");
-                };
+                    yield new Event(
+                            arguments[2],
+                            LocalDateTime.parse(arguments[3], formatter),
+                            LocalDateTime.parse(arguments[4], formatter));
+                }
+                default -> throw new ClaraException("Saved task has an unknown type.");
+            };
         task.setDone(arguments[1].equals("x"));
         return task;
     }

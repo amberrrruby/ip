@@ -118,5 +118,14 @@ just point to the entry by ID.
 - **Notes:** Added `Locale.US` to `DateTimeFormatter.ofPattern` to ensure consistent English month names across different system locales.
 - **Status:** Done
 
+### [C-012] Javadoc documentation for ClaraException
+- **Type:** AI-generated
+- **Location:** `src/main/java/clara/exception/ClaraException.java` — class and constructor Javadoc comments
+- **Source:** Antigravity AI assistance
+- **Citation format:** comment only
+- **Notes:** Added Javadoc comments to `ClaraException` class and constructor.
+- **Status:** Done
+
+
 
 
