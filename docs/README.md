@@ -1,6 +1,15 @@
 # Clara User Guide
 
-Clara is a command-line personal assistant that manages a list of tasks.
+Clara is a personal assistant that manages a list of tasks.
+
+## Using the graphical interface
+
+Run Clara to open its chat window. Type a command in the text field at the bottom, then press
+`Enter` or select `Send`. Your messages appear on the right, while Clara's replies appear on the
+left. The conversation scrolls automatically as new messages are added.
+
+Enter `bye` to display Clara's farewell and close the application. `bye` does not accept any
+additional text; for example, `bye later` is reported as an invalid command.
 
 ## Listing tasks
 

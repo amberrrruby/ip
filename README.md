@@ -1,6 +1,6 @@
 # Project Clara
 
-A simple command-line personal assistant chatbot built in Java as part of the NUS CS2103/T Individual Project.
+A JavaFX personal assistant chatbot built in Java as part of the NUS CS2103/T Individual Project.
 
 Clara supports adding, listing, marking, unmarking, deleting, and automatically saving tasks.
 
@@ -12,11 +12,10 @@ Clara supports adding, listing, marking, unmarking, deleting, and automatically 
 
 ### Running the Application
 
-Run (or, compile and run) `Clara.java` from your IDE or using the Java 25 compiler/runtime:
+Run Clara's JavaFX graphical interface with Gradle:
 
 ```bash
-javac -sourcepath src/main/java src/main/java/clara/Clara.java
-java -cp src/main/java clara.Clara
+./gradlew run
 ```
 
 Refer to the user guide `/docs/README.md` for supported behaviour.
@@ -35,6 +34,11 @@ The project will gradually be expanded as new functionality is introduced.
 │           └── clara/
 │               ├── exception/
 │               │   └── ClaraException.java  # Application exceptions
+│               ├── gui/
+│               │   ├── DialogBox.java       # Reusable message-bubble control
+│               │   ├── Launcher.java        # JavaFX application entry point
+│               │   ├── Main.java            # JavaFX application setup
+│               │   └── MainWindow.java      # Main-window FXML controller
 │               ├── parser/
 │               │   └── Parser.java          # User command parser
 │               ├── storage/
@@ -48,6 +52,16 @@ The project will gradually be expanded as new functionality is introduced.
 │               ├── ui/
 │               │   └── Ui.java              # User interaction and console output
 │               └── Clara.java               # Application entry point
+│       └── resources/
+│           ├── css/
+│           │   ├── dialog-box.css            # Message-bubble styling
+│           │   └── main.css                  # Main-window styling
+│           ├── images/
+│           │   ├── Clara.png                 # Clara avatar
+│           │   └── ClaraUser.png             # User avatar
+│           └── view/
+│               ├── DialogBox.fxml            # Dialog-box layout
+│               └── MainWindow.fxml           # Main-window layout
 ├── .gitignore
 ├── AGENTS.md           # Instructions for AI coding agents
 ├── CLAUDE.md           # For Claude Code (redirects to `AGENTS.md`)
@@ -66,7 +80,12 @@ The [CS2103/T Project Duke specification](https://nus-cs2103-ay2627-s1.github.io
 
 ## Status
 
-This project is currently at: **Level 9**. It will be developed incrementally throughout the iP.
+This project is currently at: **Level 10**. It will be developed incrementally throughout the iP.
+
+## Acknowledgements
+
+The Clara and user avatar illustrations in the GUI were generated using OpenAI image generation
+through Codex. See `CITATIONS.md` [C-014].
 
 
-*Level 0 README: Generated and modified from a [ChatGPT chat thread](https://chatgpt.com/share/6a7dd837-21bc-83ec-824e-6ab1b746ac1f).*
+*Level 0 README: Generated and modified from a [ChatGPT chat thread](https://chatgpt.com/share/6a7dd837-21bc-83ec-824e-6ab1b746ac1f).* 

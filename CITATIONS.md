@@ -126,6 +126,19 @@ just point to the entry by ID.
 - **Notes:** Added Javadoc comments to `ClaraException` class and constructor.
 - **Status:** Done
 
+### [C-013] JavaFX GUI and command-response integration
+- **Type:** AI-generated
+- **Location:** `src/main/java/clara/Clara.java` — GUI command-response bridge and exit signal; `src/main/java/clara/gui/Main.java`, `MainWindow.java`, and `DialogBox.java`; `src/main/resources/view/MainWindow.fxml` and `DialogBox.fxml`; `src/main/resources/css/main.css` and `dialog-box.css`
+- **Source:** Codex AI assistance
+- **Citation format:** comment only
+- **Notes:** JavaFX GUI implementation and the adaptation that exposes Clara command responses to the GUI. The FXML structure follows the SE-EDU JavaFX tutorial, which is course material and does not require a reuse citation.
+- **Status:** Approved, done
 
-
+### [C-014] Clara GUI avatar illustrations
+- **Type:** AI-generated
+- **Location:** `src/main/resources/images/Clara.png`, `src/main/resources/images/ClaraUser.png`; `README.md` — Acknowledgements
+- **Source:** OpenAI image generation through Codex
+- **Citation format:** README/DG
+- **Notes:** Original avatar illustrations generated for Clara's JavaFX dialog boxes.
+- **Status:** Approved, done
 
