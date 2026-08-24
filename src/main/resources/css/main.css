@@ -1,0 +1,25 @@
+/* AI-assisted JavaFX GUI implementation. See CITATIONS.md [C-013]. */
+.root {
+    main-color: #f3f6fb;
+    -fx-background-color: main-color;
+}
+
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-font: 14px "Arial";
+}
+
+.button {
+    -fx-background-color: #5b7cfa;
+    -fx-font: bold 14px "Arial";
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: #4968d8;
+}
+
+.scroll-pane,
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}

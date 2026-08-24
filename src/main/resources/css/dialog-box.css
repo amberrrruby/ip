@@ -1,0 +1,17 @@
+/* AI-assisted JavaFX GUI implementation. See CITATIONS.md [C-013]. */
+.label {
+    -fx-background-color: #5b7cfa;
+    -fx-background-radius: 1em 1em 0 1em;
+    -fx-padding: 8px;
+    -fx-text-fill: white;
+}
+
+.reply-label {
+    -fx-background-color: #e1e7f5;
+    -fx-background-radius: 1em 1em 1em 0;
+    -fx-text-fill: #1f2937;
+}
+
+#displayPicture {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 5, 0.4, 2, 2);
+}
