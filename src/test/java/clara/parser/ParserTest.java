@@ -95,15 +95,15 @@ public class ParserTest {
 
     @Test
     public void parseDeadline_blankDescriptionOrTime_exceptionThrown() {
-        ClaraException ex1 = assertThrows(ClaraException.class, () -> {
+        ClaraException blankDescriptionException = assertThrows(ClaraException.class, () -> {
             Parser.parseDeadline(" /by 2025-10-31 2359");
         });
-        assertEquals("Use: deadline <name> /by <time>.", ex1.getMessage());
+        assertEquals("Use: deadline <name> /by <time>.", blankDescriptionException.getMessage());
 
-        ClaraException ex2 = assertThrows(ClaraException.class, () -> {
+        ClaraException blankTimeException = assertThrows(ClaraException.class, () -> {
             Parser.parseDeadline("submit assignment /by ");
         });
-        assertEquals("Use: deadline <name> /by <time>.", ex2.getMessage());
+        assertEquals("Use: deadline <name> /by <time>.", blankTimeException.getMessage());
     }
 
     @Test
@@ -133,15 +133,15 @@ public class ParserTest {
 
     @Test
     public void parseEvent_missingDelimiters_exceptionThrown() {
-        ClaraException ex1 = assertThrows(ClaraException.class, () -> {
+        ClaraException missingFromDelimiterException = assertThrows(ClaraException.class, () -> {
             Parser.parseEvent("team meeting 2025-11-01 1400 /to 2025-11-01 1600");
         });
-        assertEquals("Use: event <name> /from <time> /to <time>.", ex1.getMessage());
+        assertEquals("Use: event <name> /from <time> /to <time>.", missingFromDelimiterException.getMessage());
 
-        ClaraException ex2 = assertThrows(ClaraException.class, () -> {
+        ClaraException missingToDelimiterException = assertThrows(ClaraException.class, () -> {
             Parser.parseEvent("team meeting /from 2025-11-01 1400 2025-11-01 1600");
         });
-        assertEquals("Use: event <name> /from <time> /to <time>.", ex2.getMessage());
+        assertEquals("Use: event <name> /from <time> /to <time>.", missingToDelimiterException.getMessage());
     }
 
     @Test

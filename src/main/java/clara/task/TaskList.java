@@ -13,13 +13,15 @@ import clara.exception.ClaraException;
  * Represents Clara's collection of tasks and provides operations to manipulate them.
  */
 public class TaskList {
+    private static final int FIRST_TASK_INDEX = 1;
+
     private final List<Task> tasks;
 
     /**
      * Constructs an empty task list.
      */
     public TaskList() {
-        this.tasks = new ArrayList<>(100);
+        tasks = new ArrayList<>();
     }
 
     /**
@@ -37,7 +39,7 @@ public class TaskList {
      * @return the number of tasks
      */
     public int size() {
-        return this.tasks.size();
+        return tasks.size();
     }
 
     /**
@@ -46,7 +48,7 @@ public class TaskList {
      * @return true if the list is empty, false otherwise
      */
     public boolean isEmpty() {
-        return this.tasks.isEmpty();
+        return tasks.isEmpty();
     }
 
     /**
@@ -55,7 +57,7 @@ public class TaskList {
      * @return the list of tasks
      */
     public List<Task> getTasks() {
-        return this.tasks;
+        return tasks;
     }
 
     /**
@@ -66,10 +68,7 @@ public class TaskList {
      * @throws ClaraException if the task index is out of bounds
      */
     public Task getTask(final int taskIndex) throws ClaraException {
-        if (taskIndex <= 0 || taskIndex > this.tasks.size()) {
-            throw new ClaraException("Index out of bounds: given is " + taskIndex);
-        }
-        return this.tasks.get(taskIndex - 1);
+        return tasks.get(toListIndex(taskIndex));
     }
 
     /**
@@ -78,7 +77,7 @@ public class TaskList {
      * @param task the task to add
      */
     public void addTask(final Task task) {
-        this.tasks.add(task);
+        tasks.add(task);
     }
 
     /**
@@ -89,16 +88,13 @@ public class TaskList {
      * @throws ClaraException if the task index is invalid or the task is already marked
      */
     public Task markTask(final int taskIndex) throws ClaraException {
-        if (taskIndex <= 0 || taskIndex > this.tasks.size()) {
-            throw new ClaraException("Index out of bounds: given is " + taskIndex);
-        }
-        Task theTask = this.tasks.get(taskIndex - 1);
-        if (theTask.isDone()) {
+        Task task = getTask(taskIndex);
+        if (task.isDone()) {
             throw new ClaraException(
-                    "Oops - Task " + taskIndex + " is already marked:\n| " + theTask.getTaskName());
+                    "Oops - Task " + taskIndex + " is already marked:\n| " + task.getTaskName());
         }
-        theTask.setDone(true);
-        return theTask;
+        task.setDone(true);
+        return task;
     }
 
     /**
@@ -109,16 +105,13 @@ public class TaskList {
      * @throws ClaraException if the task index is invalid or the task is already unmarked
      */
     public Task unmarkTask(final int taskIndex) throws ClaraException {
-        if (taskIndex <= 0 || taskIndex > this.tasks.size()) {
-            throw new ClaraException("Index out of bounds: given is " + taskIndex);
-        }
-        Task theTask = this.tasks.get(taskIndex - 1);
-        if (!theTask.isDone()) {
+        Task task = getTask(taskIndex);
+        if (!task.isDone()) {
             throw new ClaraException(
-                    "Oops - Task " + taskIndex + " is already unmarked:\n| " + theTask.getTaskName());
+                    "Oops - Task " + taskIndex + " is already unmarked:\n| " + task.getTaskName());
         }
-        theTask.setDone(false);
-        return theTask;
+        task.setDone(false);
+        return task;
     }
 
     /**
@@ -129,10 +122,21 @@ public class TaskList {
      * @throws ClaraException if the task index is invalid
      */
     public Task deleteTask(final int taskIndex) throws ClaraException {
-        if (taskIndex <= 0 || taskIndex > this.tasks.size()) {
+        return tasks.remove(toListIndex(taskIndex));
+    }
+
+    /**
+     * Converts a user-facing task index to a zero-based list index.
+     *
+     * @param taskIndex the one-based task index to convert
+     * @return the corresponding zero-based list index
+     * @throws ClaraException if the task index is out of bounds
+     */
+    private int toListIndex(int taskIndex) throws ClaraException {
+        if (taskIndex < FIRST_TASK_INDEX || taskIndex > tasks.size()) {
             throw new ClaraException("Index out of bounds: given is " + taskIndex);
         }
-        return this.tasks.remove(taskIndex - 1);
+        return taskIndex - FIRST_TASK_INDEX;
     }
 
     // NOTE: AI-assisted task find implementation. See CITATIONS.md [C-006].
@@ -146,8 +150,8 @@ public class TaskList {
     public List<Integer> findMatchingIndices(String argument) {
         Pattern pattern = Pattern.compile(Pattern.quote(argument));
 
-        return IntStream.range(0, this.tasks.size())
-                .filter(i -> pattern.matcher(this.tasks.get(i).getTaskName()).find())
+        return IntStream.range(0, tasks.size())
+                .filter(i -> pattern.matcher(tasks.get(i).getTaskName()).find())
                 .boxed()
                 .toList();
     }

@@ -40,13 +40,13 @@ public class TaskListTest {
 
     @Test
     public void getTask_validIndex_returnsCorrectTask() throws ClaraException {
-        Todo task1 = new Todo("task 1");
-        Todo task2 = new Todo("task 2");
-        taskList.addTask(task1);
-        taskList.addTask(task2);
+        Todo firstTask = new Todo("task 1");
+        Todo secondTask = new Todo("task 2");
+        taskList.addTask(firstTask);
+        taskList.addTask(secondTask);
 
-        assertEquals(task1, taskList.getTask(1));
-        assertEquals(task2, taskList.getTask(2));
+        assertEquals(firstTask, taskList.getTask(1));
+        assertEquals(secondTask, taskList.getTask(2));
     }
 
     @Test
@@ -138,15 +138,15 @@ public class TaskListTest {
 
     @Test
     public void deleteTask_validIndex_taskRemovedAndReturned() throws ClaraException {
-        Todo task1 = new Todo("task 1");
-        Todo task2 = new Todo("task 2");
-        taskList.addTask(task1);
-        taskList.addTask(task2);
+        Todo firstTask = new Todo("task 1");
+        Todo secondTask = new Todo("task 2");
+        taskList.addTask(firstTask);
+        taskList.addTask(secondTask);
 
         Task removed = taskList.deleteTask(1);
-        assertEquals(task1, removed);
+        assertEquals(firstTask, removed);
         assertEquals(1, taskList.size());
-        assertEquals(task2, taskList.getTask(1));
+        assertEquals(secondTask, taskList.getTask(1));
     }
 
     @Test

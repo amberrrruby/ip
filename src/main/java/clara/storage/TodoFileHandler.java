@@ -20,7 +20,8 @@ import clara.task.Todo;
  */
 public class TodoFileHandler {
     private static final Path FILE_PATH = Path.of("data", "todo-list.txt");
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
     // AI-assisted saved-task format and validation. See CITATIONS.md [C-004].
 
@@ -67,7 +68,7 @@ public class TodoFileHandler {
                     if (arguments[3].isBlank() || !arguments[4].isEmpty()) {
                         throw new ClaraException("Saved deadline task has invalid times.");
                     }
-                    yield new Deadline(arguments[2], LocalDateTime.parse(arguments[3], formatter));
+                    yield new Deadline(arguments[2], LocalDateTime.parse(arguments[3], DATE_TIME_FORMATTER));
                 }
                 case "e" -> {
                     if (arguments[3].isBlank() || arguments[4].isBlank()) {
@@ -75,8 +76,8 @@ public class TodoFileHandler {
                     }
                     yield new Event(
                             arguments[2],
-                            LocalDateTime.parse(arguments[3], formatter),
-                            LocalDateTime.parse(arguments[4], formatter));
+                            LocalDateTime.parse(arguments[3], DATE_TIME_FORMATTER),
+                            LocalDateTime.parse(arguments[4], DATE_TIME_FORMATTER));
                 }
                 default -> throw new ClaraException("Saved task has an unknown type.");
             };
@@ -101,16 +102,16 @@ public class TodoFileHandler {
                     + "|"
                     + deadline.getTaskName()
                     + "|"
-                    + deadline.getDeadlineTime().format(formatter)
+                    + deadline.getDeadlineTime().format(DATE_TIME_FORMATTER)
                     + "|";
             case Event event -> "e|"
                     + (event.isDone() ? "x" : "o")
                     + "|"
                     + event.getTaskName()
                     + "|"
-                    + event.getFromTime().format(formatter)
+                    + event.getFromTime().format(DATE_TIME_FORMATTER)
                     + "|"
-                    + event.getToTime().format(formatter);
+                    + event.getToTime().format(DATE_TIME_FORMATTER);
             default -> throw new IllegalArgumentException("Unknown subclass of Task encountered");
         };
     }
@@ -163,7 +164,7 @@ public class TodoFileHandler {
             while ((line = reader.readLine()) != null) {
                 tasks.add(parseLine(line));
             }
-        } catch (IOException e) {
+        } catch (IOException exception) {
             throw new ClaraException("Unable to load saved tasks");
         }
     }
