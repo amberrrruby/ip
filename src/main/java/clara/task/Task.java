@@ -13,6 +13,7 @@ public class Task {
      * @param taskName the name of the task
      */
     public Task(String taskName) {
+        // NOTE: AI-assisted invariant assertions. See CITATIONS.md [C-015].
         assert taskName != null && !taskName.isBlank() : "Task name must not be blank";
         this.taskName = taskName;
         this.isDone = false;

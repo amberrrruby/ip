@@ -39,6 +39,7 @@ public class TodoTest {
     }
 
     @Test
+    // NOTE: AI-assisted assertion test. See CITATIONS.md [C-015].
     public void constructor_blankName_assertionErrorThrown() {
         assertThrows(AssertionError.class, () -> new Todo(" "));
     }

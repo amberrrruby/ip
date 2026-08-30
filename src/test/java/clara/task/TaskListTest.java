@@ -39,6 +39,7 @@ public class TaskListTest {
     }
 
     @Test
+    // NOTE: AI-assisted assertion test. See CITATIONS.md [C-015].
     public void addTask_nullTask_assertionErrorThrown() {
         assertThrows(AssertionError.class, () -> taskList.addTask(null));
     }

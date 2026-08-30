@@ -29,7 +29,6 @@ just point to the entry by ID.
 
 ## Done
 
-
 ### [C-001] Invalid task-index input validation
 - **Type:** AI-generated
 - **Location:** `src/main/java/clara/Clara.java` — command error handling
@@ -140,5 +139,13 @@ just point to the entry by ID.
 - **Source:** OpenAI image generation through Codex
 - **Citation format:** README/DG
 - **Notes:** Original avatar illustrations generated for Clara's JavaFX dialog boxes.
+- **Status:** Approved, done
+
+### [C-015] Vanilla Java invariant assertions
+- **Type:** AI-generated
+- **Location:** `src/main/java/clara/task/Task.java`, `Deadline.java`, `Event.java`, and `TaskList.java`; corresponding task tests
+- **Source:** Codex AI assistance
+- **Citation format:** comment only
+- **Notes:** Added assertions for task-model invariants and tests that verify assertion failures.
 - **Status:** Approved, done
 

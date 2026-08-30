@@ -60,6 +60,7 @@ public class EventTest {
     }
 
     @Test
+    // NOTE: AI-assisted assertion test. See CITATIONS.md [C-015].
     public void constructor_missingStartTime_assertionErrorThrown() {
         LocalDateTime endTime = LocalDateTime.of(2025, 11, 1, 16, 0);
 
