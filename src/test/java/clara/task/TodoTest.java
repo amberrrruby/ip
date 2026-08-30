@@ -2,6 +2,7 @@ package clara.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -35,5 +36,11 @@ public class TodoTest {
         Todo todo = new Todo("buy groceries");
         todo.setTaskName("buy fruits");
         assertEquals("buy fruits", todo.getTaskName());
+    }
+
+    @Test
+    // NOTE: AI-assisted assertion test. See CITATIONS.md [C-015].
+    public void constructor_blankName_assertionErrorThrown() {
+        assertThrows(AssertionError.class, () -> new Todo(" "));
     }
 }
