@@ -146,7 +146,7 @@ public class TaskList {
     public List<Integer> findMatchingIndices(String argument) {
         Pattern pattern = Pattern.compile(Pattern.quote(argument));
 
-        return IntStream.range(0, this.tasks.size())
+        return IntStream.range(0, this.tasks.size()) // A-Stream usage
                 .filter(i -> pattern.matcher(this.tasks.get(i).getTaskName()).find())
                 .boxed()
                 .toList();
