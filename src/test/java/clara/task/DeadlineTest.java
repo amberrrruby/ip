@@ -2,6 +2,7 @@ package clara.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
@@ -44,5 +45,11 @@ public class DeadlineTest {
 
         deadline.setDeadlineTime(newTime);
         assertEquals(newTime, deadline.getDeadlineTime());
+    }
+
+    @Test
+    // NOTE: AI-assisted assertion test. See CITATIONS.md [C-015].
+    public void constructor_missingDeadlineTime_assertionErrorThrown() {
+        assertThrows(AssertionError.class, () -> new Deadline("submit report", null));
     }
 }

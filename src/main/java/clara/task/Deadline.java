@@ -18,6 +18,8 @@ public class Deadline extends Task {
      */
     public Deadline(String taskName, LocalDateTime deadlineTime) {
         super(taskName);
+        // NOTE: AI-assisted invariant assertions. See CITATIONS.md [C-015].
+        assert deadlineTime != null : "Deadline time must be present";
         this.deadlineTime = deadlineTime;
     }
 
@@ -26,6 +28,7 @@ public class Deadline extends Task {
     }
 
     public void setDeadlineTime(LocalDateTime newDeadlineTime) {
+        assert newDeadlineTime != null : "Deadline time must be present";
         this.deadlineTime = newDeadlineTime;
     }
 

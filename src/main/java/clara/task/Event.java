@@ -20,6 +20,9 @@ public class Event extends Task {
      */
     public Event(String taskName, LocalDateTime fromTime, LocalDateTime toTime) {
         super(taskName);
+        // NOTE: AI-assisted invariant assertions. See CITATIONS.md [C-015].
+        assert fromTime != null : "Event start time must be present";
+        assert toTime != null : "Event end time must be present";
         this.fromTime = fromTime;
         this.toTime = toTime;
     }
@@ -29,6 +32,7 @@ public class Event extends Task {
     }
 
     public void setFromTime(LocalDateTime newFromTime) {
+        assert newFromTime != null : "Event start time must be present";
         this.fromTime = newFromTime;
     }
 
@@ -37,6 +41,7 @@ public class Event extends Task {
     }
 
     public void setToTime(LocalDateTime newToTime) {
+        assert newToTime != null : "Event end time must be present";
         this.toTime = newToTime;
     }
 
