@@ -13,7 +13,8 @@ import clara.task.Todo;
  * Provides utility methods for validating and parsing user commands into tasks.
  */
 public class Parser {
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
     /**
      * Checks that a command does not have any arguments.
@@ -60,9 +61,7 @@ public class Parser {
         if (arguments.isBlank()) {
             throw new ClaraException("A todo needs a description.");
         }
-        if (arguments.indexOf('|') != -1) {
-            throw new ClaraException("The character '|' is reserved and cannot be used in task details.");
-        }
+        rejectReservedCharacter(arguments);
         return new Todo(arguments);
     }
 
@@ -74,22 +73,15 @@ public class Parser {
      * @throws ClaraException if the arguments are malformed or the deadline has an invalid format
      */
     public static Deadline parseDeadline(String arguments) throws ClaraException {
-        if (arguments.indexOf('|') != -1) {
-            throw new ClaraException("The character '|' is reserved and cannot be used in task details.");
-        }
+        rejectReservedCharacter(arguments);
         String[] nameAndTime = arguments.split(" /by ", 2);
 
         if (nameAndTime.length != 2 || nameAndTime[0].isBlank() || nameAndTime[1].isBlank()) {
             throw new ClaraException("Use: deadline <name> /by <time>.");
         }
 
-        // NOTE: AI-assisted `LocalDateTime` pattern implementation. See CITATIONS.md [C-005].
-        try {
-            LocalDateTime deadline = LocalDateTime.parse(nameAndTime[1], formatter);
-            return new Deadline(nameAndTime[0], deadline);
-        } catch (DateTimeParseException ex) {
-            throw new ClaraException("Time format: yyyy-MM-dd HHmm (e.g. 2025-12-25 1357).");
-        }
+        LocalDateTime deadline = parseDateTime(nameAndTime[1]);
+        return new Deadline(nameAndTime[0], deadline);
     }
 
     /**
@@ -100,9 +92,7 @@ public class Parser {
      * @throws ClaraException if the arguments are malformed or either time has an invalid format
      */
     public static Event parseEvent(String arguments) throws ClaraException {
-        if (arguments.indexOf('|') != -1) {
-            throw new ClaraException("The character '|' is reserved and cannot be used in task details.");
-        }
+        rejectReservedCharacter(arguments);
         String[] nameAndRest = arguments.split(" /from ", 2);
         if (nameAndRest.length != 2 || nameAndRest[0].isBlank()) {
             throw new ClaraException("Use: event <name> /from <time> /to <time>.");
@@ -115,11 +105,34 @@ public class Parser {
             throw new ClaraException("Use: event <name> /from <time> /to <time>.");
         }
 
+        LocalDateTime fromTime = parseDateTime(fromTimeAndToTime[0]);
+        LocalDateTime toTime = parseDateTime(fromTimeAndToTime[1]);
+        return new Event(nameAndRest[0], fromTime, toTime);
+    }
+
+    /**
+     * Rejects task details that contain the character reserved by the save-file format.
+     *
+     * @param taskDetails the task details to validate
+     * @throws ClaraException if the task details contain the reserved character
+     */
+    private static void rejectReservedCharacter(String taskDetails) throws ClaraException {
+        if (taskDetails.indexOf('|') != -1) {
+            throw new ClaraException("The character '|' is reserved and cannot be used in task details.");
+        }
+    }
+
+    /**
+     * Parses a date and time supplied in Clara's command format.
+     *
+     * @param dateTimeText the date and time text to parse
+     * @return the parsed date and time
+     * @throws ClaraException if the text does not use Clara's command format
+     */
+    private static LocalDateTime parseDateTime(String dateTimeText) throws ClaraException {
         // NOTE: AI-assisted `LocalDateTime` pattern implementation. See CITATIONS.md [C-005].
         try {
-            LocalDateTime fromTime = LocalDateTime.parse(fromTimeAndToTime[0], formatter);
-            LocalDateTime toTime = LocalDateTime.parse(fromTimeAndToTime[1], formatter);
-            return new Event(nameAndRest[0], fromTime, toTime);
+            return LocalDateTime.parse(dateTimeText, DATE_TIME_FORMATTER);
         } catch (DateTimeParseException ex) {
             throw new ClaraException("Time format: yyyy-MM-dd HHmm (e.g. 2025-12-25 1357).");
         }

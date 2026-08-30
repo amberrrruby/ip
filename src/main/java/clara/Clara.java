@@ -149,7 +149,7 @@ public class Clara {
      * @return the formatted task list response
      */
     private String formatTaskList() {
-        if (tasks.size() == 0) {
+        if (tasks.isEmpty()) {
             return "There are no tasks. Yay...?";
         }
 

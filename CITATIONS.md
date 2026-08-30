@@ -149,3 +149,9 @@ just point to the entry by ID.
 - **Notes:** Added assertions for task-model invariants and tests that verify assertion failures.
 - **Status:** Approved, done
 
+### [C-016] Code-quality refactoring
+- **Type:** AI-generated
+- **Location:** `src/main/java/clara/Clara.java`, `src/main/java/clara/parser/Parser.java`, `src/main/java/clara/storage/TodoFileHandler.java`, `src/main/java/clara/task/Task.java`, `src/main/java/clara/task/TaskList.java`, `src/main/java/clara/task/Deadline.java`, `src/main/java/clara/task/Event.java`, `src/test/java/clara/parser/ParserTest.java`, and `src/test/java/clara/task/TaskListTest.java` — code-quality refactors
+- **Source:** Codex AI assistance
+- **Citation format:** comment only
+- **Notes:** Refactoring to improve readability and comply with the course code-quality and Java coding standards: immutable formatter constants, extracted duplicate parsing and validation, centralized task-index conversion, removal of unnecessary qualifiers and undocumented capacity, and descriptive test-variable names.
