@@ -78,6 +78,8 @@ public class TaskList {
      * @param task the task to add
      */
     public void addTask(final Task task) {
+        // NOTE: AI-assisted invariant assertions. See CITATIONS.md [C-015].
+        assert task != null : "Task list cannot contain null tasks";
         this.tasks.add(task);
     }
 
