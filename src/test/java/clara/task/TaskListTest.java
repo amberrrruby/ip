@@ -39,6 +39,11 @@ public class TaskListTest {
     }
 
     @Test
+    public void addTask_nullTask_assertionErrorThrown() {
+        assertThrows(AssertionError.class, () -> taskList.addTask(null));
+    }
+
+    @Test
     public void getTask_validIndex_returnsCorrectTask() throws ClaraException {
         Todo task1 = new Todo("task 1");
         Todo task2 = new Todo("task 2");

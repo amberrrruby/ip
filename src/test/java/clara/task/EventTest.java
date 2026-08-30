@@ -2,6 +2,7 @@ package clara.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
@@ -56,5 +57,12 @@ public class EventTest {
 
         assertEquals(newFrom, event.getFromTime());
         assertEquals(newTo, event.getToTime());
+    }
+
+    @Test
+    public void constructor_missingStartTime_assertionErrorThrown() {
+        LocalDateTime endTime = LocalDateTime.of(2025, 11, 1, 16, 0);
+
+        assertThrows(AssertionError.class, () -> new Event("project meeting", null, endTime));
     }
 }

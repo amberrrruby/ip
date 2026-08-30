@@ -13,6 +13,7 @@ public class Task {
      * @param taskName the name of the task
      */
     public Task(String taskName) {
+        assert taskName != null && !taskName.isBlank() : "Task name must not be blank";
         this.taskName = taskName;
         this.isDone = false;
     }
@@ -22,6 +23,7 @@ public class Task {
     }
 
     public void setTaskName(String newTaskName) {
+        assert newTaskName != null && !newTaskName.isBlank() : "Task name must not be blank";
         this.taskName = newTaskName;
     }
 
