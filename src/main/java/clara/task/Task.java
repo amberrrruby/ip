@@ -20,20 +20,20 @@ public class Task {
     }
 
     public String getTaskName() {
-        return this.taskName;
+        return taskName;
     }
 
     public void setTaskName(String newTaskName) {
         assert newTaskName != null && !newTaskName.isBlank() : "Task name must not be blank";
-        this.taskName = newTaskName;
+        taskName = newTaskName;
     }
 
     public boolean isDone() {
-        return this.isDone;
+        return isDone;
     }
 
     public void setDone(boolean newIsDone) {
-        this.isDone = newIsDone;
+        isDone = newIsDone;
     }
 
     /**
@@ -43,7 +43,7 @@ public class Task {
      */
     @Override
     public String toString() {
-        String checkbox = "[" + (this.isDone ? "X" : " ") + "]";
-        return checkbox + " " + this.taskName;
+        String checkbox = "[" + (isDone ? "X" : " ") + "]";
+        return checkbox + " " + taskName;
     }
 }

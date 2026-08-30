@@ -8,6 +8,9 @@ import java.util.Locale;
  * Represents a task with a deadline.
  */
 public class Deadline extends Task {
+    private static final DateTimeFormatter DISPLAY_DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a", Locale.US);
+
     private LocalDateTime deadlineTime;
 
     /**
@@ -24,12 +27,12 @@ public class Deadline extends Task {
     }
 
     public LocalDateTime getDeadlineTime() {
-        return this.deadlineTime;
+        return deadlineTime;
     }
 
     public void setDeadlineTime(LocalDateTime newDeadlineTime) {
         assert newDeadlineTime != null : "Deadline time must be present";
-        this.deadlineTime = newDeadlineTime;
+        deadlineTime = newDeadlineTime;
     }
 
     /**
@@ -39,10 +42,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        // NOTE: AI-assisted `LocalDateTime` pattern implementation. See CITATIONS.md [C-005].
-        // NOTE: AI-assisted `Locale` specification for date formatting. See CITATIONS.md [C-011].
-        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a", Locale.US);
-
-        return "[D]" + super.toString() + " (by: " + this.deadlineTime.format(displayFormatter) + ")";
+        return "[D]" + super.toString() + " (by: "
+                + deadlineTime.format(DISPLAY_DATE_TIME_FORMATTER) + ")";
     }
 }
