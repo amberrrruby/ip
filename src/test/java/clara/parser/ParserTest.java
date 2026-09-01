@@ -54,6 +54,14 @@ public class ParserTest {
     }
 
     @Test
+    public void parseFindQuery_blankQuery_exceptionThrown() {
+        ClaraException ex = assertThrows(ClaraException.class, () -> {
+            Parser.parseFindQuery("   ");
+        });
+        assertEquals("A find command needs search text.", ex.getMessage());
+    }
+
+    @Test
     public void parseTodo_validDescription_success() throws ClaraException {
         Todo todo = Parser.parseTodo("read a book");
         assertNotNull(todo);
@@ -115,6 +123,14 @@ public class ParserTest {
     }
 
     @Test
+    public void parseDeadline_nonExistentDate_exceptionThrown() {
+        ClaraException ex = assertThrows(ClaraException.class, () -> {
+            Parser.parseDeadline("submit assignment /by 2025-02-30 1200");
+        });
+        assertEquals("Time format: yyyy-MM-dd HHmm (e.g. 2025-12-25 1357).", ex.getMessage());
+    }
+
+    @Test
     public void parseDeadline_pipeCharacter_exceptionThrown() {
         ClaraException ex = assertThrows(ClaraException.class, () -> {
             Parser.parseDeadline("submit | assignment /by 2025-10-31 2359");
@@ -158,6 +174,14 @@ public class ParserTest {
             Parser.parseEvent("team meeting /from invalid /to 2025-11-01 1600");
         });
         assertEquals("Time format: yyyy-MM-dd HHmm (e.g. 2025-12-25 1357).", ex.getMessage());
+    }
+
+    @Test
+    public void parseEvent_startNotBeforeEnd_exceptionThrown() {
+        ClaraException ex = assertThrows(ClaraException.class, () -> {
+            Parser.parseEvent("team meeting /from 2025-11-01 1600 /to 2025-11-01 1600");
+        });
+        assertEquals("An event's start time must be before its end time.", ex.getMessage());
     }
 
     @Test
