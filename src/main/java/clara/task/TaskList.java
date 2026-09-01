@@ -29,8 +29,8 @@ public class TaskList {
      *
      * @param tasks the initial list of tasks
      */
-    public TaskList(List<Task> tasks) {
-        this.tasks = new ArrayList<>(tasks);
+    public TaskList(Task... tasks) {
+        this.tasks = new ArrayList<>(List.of(tasks));
     }
 
     /**
