@@ -29,7 +29,7 @@ public class TodoFileHandler {
             DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm")
                     .withResolverStyle(ResolverStyle.STRICT);
 
-    // AI-assisted saved-task format and validation. See CITATIONS.md [C-004].
+    // AI-assisted saved-task format and validation. See CITATIONS.md [C-004], [C-017].
 
     /**
      * Stores one task per line using the following format:
@@ -139,7 +139,7 @@ public class TodoFileHandler {
         return LocalDateTime.parse(dateTimeText, DATE_TIME_FORMATTER);
     }
 
-    // AI-assisted buffered file saving. See CITATIONS.md [C-004].
+    // AI-assisted buffered file saving. See CITATIONS.md [C-004], [C-017].
 
     /**
      * Saves all tasks to the task data file, replacing any previously saved tasks.
@@ -189,7 +189,7 @@ public class TodoFileHandler {
         }
     }
 
-    // AI-assisted buffered file loading. See CITATIONS.md [C-004].
+    // AI-assisted buffered file loading. See CITATIONS.md [C-004], [C-017].
 
     /**
      * Loads saved tasks from the task data file into the given list.

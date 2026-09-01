@@ -64,7 +64,7 @@ public class Parser {
         return arguments;
     }
 
-    // NOTE: AI-assisted task-command input validation. See CITATIONS.md [C-002].
+    // NOTE: AI-assisted task-command input validation. See CITATIONS.md [C-002], [C-017].
 
     /**
      * Parses a todo command argument into a {@link Todo} task.
@@ -121,6 +121,7 @@ public class Parser {
             throw new ClaraException("Use: event <name> /from <time> /to <time>.");
         }
 
+        // NOTE: AI-assisted event-range validation. See CITATIONS.md [C-017].
         LocalDateTime fromTime = parseDateTime(fromTimeAndToTime[0]);
         LocalDateTime toTime = parseDateTime(fromTimeAndToTime[1]);
         if (!fromTime.isBefore(toTime)) {

@@ -15,7 +15,7 @@ import clara.task.Deadline;
 import clara.task.Event;
 import clara.task.Todo;
 
-// NOTE: AI-assisted test suite implementation. See CITATIONS.md [C-010].
+// NOTE: AI-assisted test suite implementation. See CITATIONS.md [C-010], [C-017].
 
 /**
  * Unit tests for {@link Parser}.

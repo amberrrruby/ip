@@ -155,3 +155,11 @@ just point to the entry by ID.
 - **Source:** Codex AI assistance
 - **Citation format:** comment only
 - **Notes:** Refactoring to improve readability and comply with the course code-quality and Java coding standards: immutable formatter constants, extracted duplicate parsing and validation, centralized task-index conversion, removal of unnecessary qualifiers and undocumented capacity, and descriptive test-variable names.
+
+### [C-017] Error-handling validation and resilient task persistence
+- **Type:** AI-generated
+- **Location:** `src/main/java/clara/parser/Parser.java` — strict date parsing, blank find-query validation, and event-range validation; `src/main/java/clara/storage/TodoFileHandler.java` — safe save-file replacement and complete saved-task validation; `src/main/java/clara/Clara.java` — task-state rollback when persistence fails; `src/test/java/clara/parser/ParserTest.java` — corresponding parser tests
+- **Source:** Codex AI assistance
+- **Citation format:** comment only
+- **Notes:** Added user-facing validation for blank search queries, non-existent dates, and event ranges; hardened save loading and writing; and added rollback logic to prevent in-memory task state from diverging when saving fails.
+- **Status:** Approved, done
