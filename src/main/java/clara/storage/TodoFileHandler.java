@@ -3,10 +3,15 @@ package clara.storage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.ArrayList;
 import java.util.List;
 
 import clara.exception.ClaraException;
@@ -21,7 +26,8 @@ import clara.task.Todo;
 public class TodoFileHandler {
     private static final Path FILE_PATH = Path.of("data", "todo-list.txt");
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+            DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm")
+                    .withResolverStyle(ResolverStyle.STRICT);
 
     // AI-assisted saved-task format and validation. See CITATIONS.md [C-004].
 
@@ -56,8 +62,9 @@ public class TodoFileHandler {
             throw new ClaraException("Saved task needs a title.");
         }
 
-        Task task =
-            switch (arguments[0]) {
+        Task task;
+        try {
+            task = switch (arguments[0]) {
                 case "t" -> {
                     if (!arguments[3].isEmpty() || !arguments[4].isEmpty()) {
                         throw new ClaraException("Saved todo task must not have times.");
@@ -68,19 +75,24 @@ public class TodoFileHandler {
                     if (arguments[3].isBlank() || !arguments[4].isEmpty()) {
                         throw new ClaraException("Saved deadline task has invalid times.");
                     }
-                    yield new Deadline(arguments[2], LocalDateTime.parse(arguments[3], DATE_TIME_FORMATTER));
+                    yield new Deadline(arguments[2], parseDateTime(arguments[3]));
                 }
                 case "e" -> {
                     if (arguments[3].isBlank() || arguments[4].isBlank()) {
                         throw new ClaraException("Saved event task needs start and end times.");
                     }
-                    yield new Event(
-                            arguments[2],
-                            LocalDateTime.parse(arguments[3], DATE_TIME_FORMATTER),
-                            LocalDateTime.parse(arguments[4], DATE_TIME_FORMATTER));
+                    LocalDateTime fromTime = parseDateTime(arguments[3]);
+                    LocalDateTime toTime = parseDateTime(arguments[4]);
+                    if (!fromTime.isBefore(toTime)) {
+                        throw new ClaraException("Saved event must start before it ends.");
+                    }
+                    yield new Event(arguments[2], fromTime, toTime);
                 }
                 default -> throw new ClaraException("Saved task has an unknown type.");
             };
+        } catch (DateTimeParseException ex) {
+            throw new ClaraException("Saved task has an invalid date or time.");
+        }
         task.setDone(arguments[1].equals("x"));
         return task;
     }
@@ -116,6 +128,17 @@ public class TodoFileHandler {
         };
     }
 
+    /**
+     * Parses a date and time in the format used by Clara's save file.
+     *
+     * @param dateTimeText the saved date and time
+     * @return the parsed date and time
+     * @throws DateTimeParseException if the date or time is invalid
+     */
+    private static LocalDateTime parseDateTime(final String dateTimeText) throws DateTimeParseException {
+        return LocalDateTime.parse(dateTimeText, DATE_TIME_FORMATTER);
+    }
+
     // AI-assisted buffered file saving. See CITATIONS.md [C-004].
 
     /**
@@ -126,17 +149,43 @@ public class TodoFileHandler {
      *                        file
      */
     public static void flushTasksToDisk(final List<Task> tasks) throws ClaraException {
+        Path temporaryFile = null;
         try {
             Files.createDirectories(FILE_PATH.getParent());
-
-            try (BufferedWriter writer = Files.newBufferedWriter(FILE_PATH)) {
+            temporaryFile = Files.createTempFile(FILE_PATH.getParent(), "todo-list-", ".tmp");
+            try (BufferedWriter writer = Files.newBufferedWriter(temporaryFile)) {
                 for (Task task : tasks) {
                     writer.write(taskToFileLine(task));
                     writer.newLine();
                 }
             }
+            moveIntoPlace(temporaryFile);
+            temporaryFile = null;
         } catch (IOException ex) {
             throw new ClaraException("Unable to write saved tasks");
+        } finally {
+            if (temporaryFile != null) {
+                try {
+                    Files.deleteIfExists(temporaryFile);
+                } catch (IOException ignored) {
+                    // The original write failure is more useful to the user than a cleanup failure.
+                }
+            }
+        }
+    }
+
+    /**
+     * Replaces the task file with a completed temporary file.
+     *
+     * @param temporaryFile the completed replacement file
+     * @throws IOException if the replacement cannot be completed
+     */
+    private static void moveIntoPlace(final Path temporaryFile) throws IOException {
+        try {
+            Files.move(temporaryFile, FILE_PATH,
+                    StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+        } catch (AtomicMoveNotSupportedException ex) {
+            Files.move(temporaryFile, FILE_PATH, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
@@ -156,16 +205,19 @@ public class TodoFileHandler {
             return;
         }
 
-        tasks.clear();
+        List<Task> loadedTasks = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(FILE_PATH)) {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                tasks.add(parseLine(line));
+                loadedTasks.add(parseLine(line));
             }
         } catch (IOException exception) {
             throw new ClaraException("Unable to load saved tasks");
         }
+
+        tasks.clear();
+        tasks.addAll(loadedTasks);
     }
 }
