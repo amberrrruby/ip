@@ -32,6 +32,12 @@ The character `|` is reserved for Clara's save format and cannot be used in task
 Enter `mark <task-number>` to mark a task as done, or `unmark <task-number>` to mark a task as not done.
 The task number is the number shown in the output of doing `list`.
 
+## Setting task priority
+
+Enter `priority <task-number> <low|medium|high>` to set a task's priority. New tasks have
+`Medium` priority by default. Task listings show the priority after the completion status; for
+example, `[X] High submit report`.
+
 ## Deleting tasks
 
 Enter `delete <task-number>` to remove a task from the list.
@@ -39,7 +45,8 @@ The task number is the number shown in the output of doing `list`.
 
 ## Saving tasks
 
-Clara automatically saves the task list after you add, mark, unmark, or delete a task. When Clara starts, it restores the previously saved task list.
+Clara automatically saves the task list after you add, mark, unmark, delete, or change a task's
+priority. When Clara starts, it restores the previously saved task list.
 
 ## Finding tasks
 
@@ -53,5 +60,6 @@ Clara explains invalid commands and inputs, then lets you try again. For example
 
 Enter `bye` to exit the app.
 
+*The task priority feature was implemented with Codex AI assistance. See `CITATIONS.md` [C-017].*
 
 *Co-maintained by Codex.*

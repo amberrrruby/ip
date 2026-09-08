@@ -49,6 +49,7 @@ public class Parser {
         }
     }
 
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
     /**
      * Parses a priority supplied in a priority command.
      *

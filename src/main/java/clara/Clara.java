@@ -116,6 +116,7 @@ public class Clara {
                     TodoFileHandler.flushTasksToDisk(tasks.getTasks());
                     yield formatTaskDeleted(deletedTask, taskIndexToDelete);
                 }
+                // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
                 case "priority" -> {
                     String[] priorityArguments = arguments.split("\\s+", 2);
                     if (priorityArguments.length != 2) {

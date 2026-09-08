@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 public class TodoTest {
 
     @Test
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
     public void toString_uncompletedTodo_correctFormat() {
         Todo todo = new Todo("buy groceries");
         assertFalse(todo.isDone());

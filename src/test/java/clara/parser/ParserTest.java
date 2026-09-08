@@ -55,6 +55,7 @@ public class ParserTest {
     }
 
     @Test
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
     public void parsePriority_validPriority_success() throws ClaraException {
         assertEquals(Priority.LOW, Parser.parsePriority("low"));
         assertEquals(Priority.MEDIUM, Parser.parsePriority("medium"));

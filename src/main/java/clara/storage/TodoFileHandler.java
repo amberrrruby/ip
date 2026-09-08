@@ -33,6 +33,7 @@ public class TodoFileHandler {
     private static final int FIELD_COUNT = 6;
     private static final int TYPE_FIELD_INDEX = 0;
     private static final int STATUS_FIELD_INDEX = 1;
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
     private static final int PRIORITY_FIELD_INDEX = 2;
     private static final int TITLE_FIELD_INDEX = 3;
     private static final int FIRST_TIME_FIELD_INDEX = 4;

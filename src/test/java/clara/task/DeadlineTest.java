@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 public class DeadlineTest {
 
     @Test
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
     public void toString_uncompletedDeadline_correctFormat() {
         LocalDateTime time = LocalDateTime.of(2025, 10, 15, 18, 0);
         Deadline deadline = new Deadline("submit report", time);
