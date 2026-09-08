@@ -8,10 +8,12 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import clara.exception.ClaraException;
 import clara.task.Deadline;
 import clara.task.Event;
+import clara.task.Priority;
 import clara.task.Task;
 import clara.task.Todo;
 
@@ -20,8 +22,34 @@ import clara.task.Todo;
  */
 public class TodoFileHandler {
     private static final Path FILE_PATH = Path.of("data", "todo-list.txt");
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HHmm";
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+            DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+
+    private static final String FIELD_SEPARATOR = "|";
+    private static final String FIELD_SEPARATOR_PATTERN = Pattern.quote(FIELD_SEPARATOR);
+    private static final int PRESERVE_TRAILING_EMPTY_FIELDS = -1;
+
+    private static final int FIELD_COUNT = 6;
+    private static final int TYPE_FIELD_INDEX = 0;
+    private static final int STATUS_FIELD_INDEX = 1;
+    private static final int PRIORITY_FIELD_INDEX = 2;
+    private static final int TITLE_FIELD_INDEX = 3;
+    private static final int FIRST_TIME_FIELD_INDEX = 4;
+    private static final int SECOND_TIME_FIELD_INDEX = 5;
+
+    private static final String TODO_TYPE = "t";
+    private static final String DEADLINE_TYPE = "d";
+    private static final String EVENT_TYPE = "e";
+
+    private static final String DONE_STATUS = "x";
+    private static final String NOT_DONE_STATUS = "o";
+
+    private static final String LOW_PRIORITY = "l";
+    private static final String MEDIUM_PRIORITY = "m";
+    private static final String HIGH_PRIORITY = "h";
+
+    private static final String EMPTY_FIELD = "";
 
     // AI-assisted saved-task format and validation. See CITATIONS.md [C-004].
 
@@ -29,9 +57,10 @@ public class TodoFileHandler {
      * Stores one task per line using the following format:
      *
      * <pre>
-     * task   ::= type "|" status "|" title "|" time1 "|" time2
-     * type   ::= "t" | "d" | "e"
-     * status ::= "x" | "o"
+     * task     ::= type "|" status "|" priority "|" title "|" time1 "|" time2
+     * type     ::= "t" | "d" | "e"
+     * status   ::= "x" | "o"
+     * priority ::= "l" | "m" | "h" -- corresponding to low, medium, high
      * </pre>
      *
      * <p>Todo tasks leave {@code time1} and {@code time2} empty, while deadline tasks leave {@code
@@ -45,44 +74,70 @@ public class TodoFileHandler {
         if (line.isBlank()) {
             throw new ClaraException("Saved task line cannot be empty.");
         }
-        final String[] arguments = line.split("\\|", -1);
-        if (arguments.length != 5) {
+        final String[] arguments = line.split(FIELD_SEPARATOR_PATTERN, PRESERVE_TRAILING_EMPTY_FIELDS);
+        if (arguments.length != FIELD_COUNT) {
             throw new ClaraException("Saved task has an invalid number of fields.");
         }
-        if (!arguments[1].equals("x") && !arguments[1].equals("o")) {
+        if (!arguments[STATUS_FIELD_INDEX].equals(DONE_STATUS)
+                && !arguments[STATUS_FIELD_INDEX].equals(NOT_DONE_STATUS)) {
             throw new ClaraException("Saved task has an invalid status.");
         }
-        if (arguments[2].isBlank()) {
+        Priority priority = parsePriority(arguments[PRIORITY_FIELD_INDEX]);
+        if (arguments[TITLE_FIELD_INDEX].isBlank()) {
             throw new ClaraException("Saved task needs a title.");
         }
 
         Task task =
-            switch (arguments[0]) {
-                case "t" -> {
-                    if (!arguments[3].isEmpty() || !arguments[4].isEmpty()) {
+            switch (arguments[TYPE_FIELD_INDEX]) {
+                case TODO_TYPE -> {
+                    if (!arguments[FIRST_TIME_FIELD_INDEX].isEmpty()
+                            || !arguments[SECOND_TIME_FIELD_INDEX].isEmpty()) {
                         throw new ClaraException("Saved todo task must not have times.");
                     }
-                    yield new Todo(arguments[2]);
+                    yield new Todo(arguments[TITLE_FIELD_INDEX]);
                 }
-                case "d" -> {
-                    if (arguments[3].isBlank() || !arguments[4].isEmpty()) {
+                case DEADLINE_TYPE -> {
+                    if (arguments[FIRST_TIME_FIELD_INDEX].isBlank()
+                            || !arguments[SECOND_TIME_FIELD_INDEX].isEmpty()) {
                         throw new ClaraException("Saved deadline task has invalid times.");
                     }
-                    yield new Deadline(arguments[2], LocalDateTime.parse(arguments[3], DATE_TIME_FORMATTER));
+                    yield new Deadline(arguments[TITLE_FIELD_INDEX],
+                            LocalDateTime.parse(
+                                    arguments[FIRST_TIME_FIELD_INDEX], DATE_TIME_FORMATTER));
                 }
-                case "e" -> {
-                    if (arguments[3].isBlank() || arguments[4].isBlank()) {
+                case EVENT_TYPE -> {
+                    if (arguments[FIRST_TIME_FIELD_INDEX].isBlank()
+                            || arguments[SECOND_TIME_FIELD_INDEX].isBlank()) {
                         throw new ClaraException("Saved event task needs start and end times.");
                     }
                     yield new Event(
-                            arguments[2],
-                            LocalDateTime.parse(arguments[3], DATE_TIME_FORMATTER),
-                            LocalDateTime.parse(arguments[4], DATE_TIME_FORMATTER));
+                            arguments[TITLE_FIELD_INDEX],
+                            LocalDateTime.parse(
+                                    arguments[FIRST_TIME_FIELD_INDEX], DATE_TIME_FORMATTER),
+                            LocalDateTime.parse(
+                                    arguments[SECOND_TIME_FIELD_INDEX], DATE_TIME_FORMATTER));
                 }
                 default -> throw new ClaraException("Saved task has an unknown type.");
             };
-        task.setDone(arguments[1].equals("x"));
+        task.setDone(arguments[STATUS_FIELD_INDEX].equals(DONE_STATUS));
+        task.setPriority(priority);
         return task;
+    }
+
+    /**
+     * Converts a priority code in the saved-task format to a task priority.
+     *
+     * @param priorityCode the priority code to convert
+     * @return the matching task priority
+     * @throws ClaraException if the priority code is invalid
+     */
+    private static Priority parsePriority(String priorityCode) throws ClaraException {
+        return switch (priorityCode) {
+            case LOW_PRIORITY -> Priority.LOW;
+            case MEDIUM_PRIORITY -> Priority.MEDIUM;
+            case HIGH_PRIORITY -> Priority.HIGH;
+            default -> throw new ClaraException("Saved task has an invalid priority.");
+        };
     }
 
     // AI-assisted task serialization. See CITATIONS.md [C-004].
@@ -96,23 +151,28 @@ public class TodoFileHandler {
      */
     private static String taskToFileLine(final Task task) {
         return switch (task) {
-            case Todo todo -> "t|" + (todo.isDone() ? "x" : "o") + "|" + todo.getTaskName() + "||";
-            case Deadline deadline -> "d|"
-                    + (deadline.isDone() ? "x" : "o")
-                    + "|"
-                    + deadline.getTaskName()
-                    + "|"
-                    + deadline.getDeadlineTime().format(DATE_TIME_FORMATTER)
-                    + "|";
-            case Event event -> "e|"
-                    + (event.isDone() ? "x" : "o")
-                    + "|"
-                    + event.getTaskName()
-                    + "|"
-                    + event.getFromTime().format(DATE_TIME_FORMATTER)
-                    + "|"
-                    + event.getToTime().format(DATE_TIME_FORMATTER);
+            case Todo todo -> String.join(FIELD_SEPARATOR, TODO_TYPE, getStatus(todo),
+                    getPriority(todo), todo.getTaskName(), EMPTY_FIELD, EMPTY_FIELD);
+            case Deadline deadline -> String.join(FIELD_SEPARATOR, DEADLINE_TYPE, getStatus(deadline),
+                    getPriority(deadline), deadline.getTaskName(),
+                    deadline.getDeadlineTime().format(DATE_TIME_FORMATTER), EMPTY_FIELD);
+            case Event event -> String.join(FIELD_SEPARATOR, EVENT_TYPE, getStatus(event),
+                    getPriority(event), event.getTaskName(),
+                    event.getFromTime().format(DATE_TIME_FORMATTER),
+                    event.getToTime().format(DATE_TIME_FORMATTER));
             default -> throw new IllegalArgumentException("Unknown subclass of Task encountered");
+        };
+    }
+
+    private static String getStatus(Task task) {
+        return task.isDone() ? DONE_STATUS : NOT_DONE_STATUS;
+    }
+
+    private static String getPriority(Task task) {
+        return switch (task.getPriority()) {
+            case LOW -> LOW_PRIORITY;
+            case MEDIUM -> MEDIUM_PRIORITY;
+            case HIGH -> HIGH_PRIORITY;
         };
     }
 
