@@ -3,10 +3,15 @@ package clara.storage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -22,9 +27,10 @@ import clara.task.Todo;
  */
 public class TodoFileHandler {
     private static final Path FILE_PATH = Path.of("data", "todo-list.txt");
-    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HHmm";
+    private static final String DATE_TIME_FORMAT = "uuuu-MM-dd HHmm";
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+            DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+                    .withResolverStyle(ResolverStyle.STRICT);
 
     private static final String FIELD_SEPARATOR = "|";
     private static final String FIELD_SEPARATOR_PATTERN = Pattern.quote(FIELD_SEPARATOR);
@@ -52,8 +58,7 @@ public class TodoFileHandler {
 
     private static final String EMPTY_FIELD = "";
 
-    // AI-assisted saved-task format and validation. See CITATIONS.md [C-004].
-
+    // NOTE: AI-assisted saved-task format and validation. See CITATIONS.md [C-004], [C-017].
     /**
      * Stores one task per line using the following format:
      *
@@ -88,8 +93,9 @@ public class TodoFileHandler {
             throw new ClaraException("Saved task needs a title.");
         }
 
-        Task task =
-            switch (arguments[TYPE_FIELD_INDEX]) {
+        Task task;
+        try {
+            task = switch (arguments[TYPE_FIELD_INDEX]) {
                 case TODO_TYPE -> {
                     if (!arguments[FIRST_TIME_FIELD_INDEX].isEmpty()
                             || !arguments[SECOND_TIME_FIELD_INDEX].isEmpty()) {
@@ -102,24 +108,25 @@ public class TodoFileHandler {
                             || !arguments[SECOND_TIME_FIELD_INDEX].isEmpty()) {
                         throw new ClaraException("Saved deadline task has invalid times.");
                     }
-                    yield new Deadline(arguments[TITLE_FIELD_INDEX],
-                            LocalDateTime.parse(
-                                    arguments[FIRST_TIME_FIELD_INDEX], DATE_TIME_FORMATTER));
+                    yield new Deadline(arguments[TITLE_FIELD_INDEX], parseDateTime(arguments[FIRST_TIME_FIELD_INDEX]));
                 }
                 case EVENT_TYPE -> {
                     if (arguments[FIRST_TIME_FIELD_INDEX].isBlank()
                             || arguments[SECOND_TIME_FIELD_INDEX].isBlank()) {
                         throw new ClaraException("Saved event task needs start and end times.");
                     }
-                    yield new Event(
-                            arguments[TITLE_FIELD_INDEX],
-                            LocalDateTime.parse(
-                                    arguments[FIRST_TIME_FIELD_INDEX], DATE_TIME_FORMATTER),
-                            LocalDateTime.parse(
-                                    arguments[SECOND_TIME_FIELD_INDEX], DATE_TIME_FORMATTER));
+                    LocalDateTime fromTime = parseDateTime(arguments[FIRST_TIME_FIELD_INDEX]);
+                    LocalDateTime toTime = parseDateTime(arguments[SECOND_TIME_FIELD_INDEX]);
+                    if (!fromTime.isBefore(toTime)) {
+                        throw new ClaraException("Saved event must start before it ends.");
+                    }
+                    yield new Event(arguments[TITLE_FIELD_INDEX], fromTime, toTime);
                 }
                 default -> throw new ClaraException("Saved task has an unknown type.");
             };
+        } catch (DateTimeParseException ex) {
+            throw new ClaraException("Saved task has an invalid date or time.");
+        }
         task.setDone(arguments[STATUS_FIELD_INDEX].equals(DONE_STATUS));
         task.setPriority(priority);
         return task;
@@ -165,6 +172,17 @@ public class TodoFileHandler {
         };
     }
 
+    /**
+     * Parses a date and time in the format used by Clara's save file.
+     *
+     * @param dateTimeText the saved date and time
+     * @return the parsed date and time
+     * @throws DateTimeParseException if the date or time is invalid
+     */
+    private static LocalDateTime parseDateTime(final String dateTimeText) throws DateTimeParseException {
+        return LocalDateTime.parse(dateTimeText, DATE_TIME_FORMATTER);
+    }
+
     private static String getStatus(Task task) {
         return task.isDone() ? DONE_STATUS : NOT_DONE_STATUS;
     }
@@ -177,8 +195,7 @@ public class TodoFileHandler {
         };
     }
 
-    // AI-assisted buffered file saving. See CITATIONS.md [C-004].
-
+    // NOTE: AI-assisted buffered file saving. See CITATIONS.md [C-004], [C-017].
     /**
      * Saves all tasks to the task data file, replacing any previously saved tasks.
      *
@@ -187,21 +204,47 @@ public class TodoFileHandler {
      *                        file
      */
     public static void flushTasksToDisk(final List<Task> tasks) throws ClaraException {
+        Path temporaryFile = null;
         try {
             Files.createDirectories(FILE_PATH.getParent());
-
-            try (BufferedWriter writer = Files.newBufferedWriter(FILE_PATH)) {
+            temporaryFile = Files.createTempFile(FILE_PATH.getParent(), "todo-list-", ".tmp");
+            try (BufferedWriter writer = Files.newBufferedWriter(temporaryFile)) {
                 for (Task task : tasks) {
                     writer.write(taskToFileLine(task));
                     writer.newLine();
                 }
             }
+            moveIntoPlace(temporaryFile);
+            temporaryFile = null;
         } catch (IOException ex) {
             throw new ClaraException("Unable to write saved tasks");
+        } finally {
+            if (temporaryFile != null) {
+                try {
+                    Files.deleteIfExists(temporaryFile);
+                } catch (IOException ignored) {
+                    // The original write failure is more useful to the user than a cleanup failure.
+                }
+            }
         }
     }
 
-    // AI-assisted buffered file loading. See CITATIONS.md [C-004].
+    /**
+     * Replaces the task file with a completed temporary file.
+     *
+     * @param temporaryFile the completed replacement file
+     * @throws IOException if the replacement cannot be completed
+     */
+    private static void moveIntoPlace(final Path temporaryFile) throws IOException {
+        try {
+            Files.move(temporaryFile, FILE_PATH,
+                    StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+        } catch (AtomicMoveNotSupportedException ex) {
+            Files.move(temporaryFile, FILE_PATH, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    // AI-assisted buffered file loading. See CITATIONS.md [C-004], [C-017].
 
     /**
      * Loads saved tasks from the task data file into the given list.
@@ -217,16 +260,19 @@ public class TodoFileHandler {
             return;
         }
 
-        tasks.clear();
+        List<Task> loadedTasks = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(FILE_PATH)) {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                tasks.add(parseLine(line));
+                loadedTasks.add(parseLine(line));
             }
         } catch (IOException exception) {
             throw new ClaraException("Unable to load saved tasks");
         }
+
+        tasks.clear();
+        tasks.addAll(loadedTasks);
     }
 }

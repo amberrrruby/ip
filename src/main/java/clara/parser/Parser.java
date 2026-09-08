@@ -3,6 +3,7 @@ package clara.parser;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 import clara.exception.ClaraException;
 import clara.task.Deadline;
@@ -15,7 +16,8 @@ import clara.task.Todo;
  */
 public class Parser {
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+            DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm")
+                    .withResolverStyle(ResolverStyle.STRICT);
 
     /**
      * Checks that a command does not have any arguments.
@@ -49,7 +51,21 @@ public class Parser {
         }
     }
 
-    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
+    /**
+     * Parses the search text supplied to a find command.
+     *
+     * @param arguments the search text
+     * @return the non-blank search text
+     * @throws ClaraException if no search text is supplied
+     */
+    public static String parseFindQuery(final String arguments) throws ClaraException {
+        if (arguments.isBlank()) {
+            throw new ClaraException("A find command needs search text.");
+        }
+        return arguments;
+    }
+
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-018].
     /**
      * Parses a priority supplied in a priority command.
      *
@@ -66,8 +82,7 @@ public class Parser {
         };
     }
 
-    // NOTE: AI-assisted task-command input validation. See CITATIONS.md [C-002].
-
+    // NOTE: AI-assisted task-command input validation. See CITATIONS.md [C-002], [C-017].
     /**
      * Parses a todo command argument into a {@link Todo} task.
      *
@@ -123,8 +138,12 @@ public class Parser {
             throw new ClaraException("Use: event <name> /from <time> /to <time>.");
         }
 
+        // NOTE: AI-assisted event-range validation. See CITATIONS.md [C-017].
         LocalDateTime fromTime = parseDateTime(fromTimeAndToTime[0]);
         LocalDateTime toTime = parseDateTime(fromTimeAndToTime[1]);
+        if (!fromTime.isBefore(toTime)) {
+            throw new ClaraException("An event's start time must be before its end time.");
+        }
         return new Event(nameAndRest[0], fromTime, toTime);
     }
 
