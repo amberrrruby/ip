@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 public class EventTest {
 
     @Test
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
     public void toString_uncompletedEvent_correctFormat() {
         LocalDateTime from = LocalDateTime.of(2025, 11, 1, 14, 0);
         LocalDateTime to = LocalDateTime.of(2025, 11, 1, 16, 0);
@@ -27,7 +28,7 @@ public class EventTest {
         assertEquals(from, event.getFromTime());
         assertEquals(to, event.getToTime());
         assertEquals(
-                "[E][ ] project meeting (from: Nov 01 2025, 2:00 PM to: Nov 01 2025, 4:00 PM)",
+                "[E][ ] Medium project meeting (from: Nov 01 2025, 2:00 PM to: Nov 01 2025, 4:00 PM)",
                 event.toString());
     }
 
@@ -40,7 +41,7 @@ public class EventTest {
 
         assertTrue(event.isDone());
         assertEquals(
-                "[E][X] project meeting (from: Nov 01 2025, 2:00 PM to: Nov 01 2025, 4:00 PM)",
+                "[E][X] Medium project meeting (from: Nov 01 2025, 2:00 PM to: Nov 01 2025, 4:00 PM)",
                 event.toString());
     }
 

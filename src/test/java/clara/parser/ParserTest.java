@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import clara.exception.ClaraException;
 import clara.task.Deadline;
 import clara.task.Event;
+import clara.task.Priority;
 import clara.task.Todo;
 
 // NOTE: AI-assisted test suite implementation. See CITATIONS.md [C-010], [C-017].
@@ -59,6 +60,22 @@ public class ParserTest {
             Parser.parseFindQuery("   ");
         });
         assertEquals("A find command needs search text.", ex.getMessage());
+    }
+
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-018].
+    @Test
+    public void parsePriority_validPriority_success() throws ClaraException {
+        assertEquals(Priority.LOW, Parser.parsePriority("low"));
+        assertEquals(Priority.MEDIUM, Parser.parsePriority("medium"));
+        assertEquals(Priority.HIGH, Parser.parsePriority("high"));
+    }
+
+    @Test
+    public void parsePriority_invalidPriority_exceptionThrown() {
+        ClaraException ex = assertThrows(ClaraException.class, () -> {
+            Parser.parsePriority("urgent");
+        });
+        assertEquals("Use: priority <task number> <low|medium|high>.", ex.getMessage());
     }
 
     @Test

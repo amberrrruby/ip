@@ -162,4 +162,15 @@ just point to the entry by ID.
 - **Source:** Codex AI assistance
 - **Citation format:** comment only
 - **Notes:** Added user-facing validation for blank search queries, non-existent dates, and event ranges; hardened save loading and writing; and added rollback logic to prevent in-memory task state from diverging when saving fails.
+
+### [C-018] Task priority feature
+- **Type:** AI-generated
+- **Location:** `src/main/java/clara/task/Priority.java`, `Task.java`,
+  `src/main/java/clara/storage/TodoFileHandler.java`, `src/main/java/clara/Clara.java`,
+  `src/main/java/clara/parser/Parser.java`, and corresponding task/parser tests; `README.md` and
+  `docs/README.md`
+- **Source:** Codex AI assistance
+- **Citation format:** README/DG + comment only
+- **Notes:** Added task priority levels, display formatting, persistence, the `priority` command,
+  parser validation, regression tests, and user documentation.
 - **Status:** Approved, done
