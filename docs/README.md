@@ -60,6 +60,6 @@ Clara explains invalid commands and inputs, then lets you try again. For example
 
 Enter `bye` to exit the app.
 
-*The task priority feature was implemented with Codex AI assistance. See `CITATIONS.md` [C-017].*
+*The task priority feature was implemented with Codex AI assistance. See `CITATIONS.md` [C-018].*
 
 *Co-maintained by Codex.*

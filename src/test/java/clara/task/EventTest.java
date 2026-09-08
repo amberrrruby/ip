@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 public class EventTest {
 
     @Test
-    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-018].
     public void toString_uncompletedEvent_correctFormat() {
         LocalDateTime from = LocalDateTime.of(2025, 11, 1, 14, 0);
         LocalDateTime to = LocalDateTime.of(2025, 11, 1, 16, 0);

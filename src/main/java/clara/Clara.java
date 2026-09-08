@@ -132,7 +132,7 @@ public class Clara {
                     }
                     yield formatTaskDeleted(deletedTask, taskIndexToDelete);
                 }
-                // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
+                // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-018].
                 case "priority" -> {
                     String[] priorityArguments = arguments.split("\\s+", 2);
                     if (priorityArguments.length != 2) {

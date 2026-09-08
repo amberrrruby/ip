@@ -6,7 +6,7 @@ package clara.task;
 public class Task {
     private String taskName;
     private boolean isDone;
-    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-018].
     private Priority priority;
 
     /**

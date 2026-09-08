@@ -90,7 +90,7 @@ This project is currently at: **Level 10**. It will be developed incrementally t
 The Clara and user avatar illustrations in the GUI were generated using OpenAI image generation
 through Codex. See `CITATIONS.md` [C-014].
 
-The task priority feature was implemented with Codex AI assistance. See `CITATIONS.md` [C-017].
+The task priority feature was implemented with Codex AI assistance. See `CITATIONS.md` [C-018].
 
 
 *Level 0 README: Generated and modified from a [ChatGPT chat thread](https://chatgpt.com/share/6a7dd837-21bc-83ec-824e-6ab1b746ac1f).* 

@@ -1,6 +1,6 @@
 package clara.task;
 
-// NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
+// NOTE: AI-assisted task priority feature. See CITATIONS.md [C-018].
 
 /**
  * The importance level assigned to a task.
