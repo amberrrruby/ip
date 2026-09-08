@@ -93,7 +93,7 @@ public class Clara {
                 case "bye" -> {
                     Parser.requireNoArguments(command, arguments);
                     shouldExit = true;
-                    yield "Goodbye. See you again.";
+                    yield "All noted. See you next time.";
                 }
                 case "list" -> {
                     Parser.requireNoArguments(command, arguments);
@@ -108,7 +108,7 @@ public class Clara {
                         markedTask.setDone(false);
                         throw ex;
                     }
-                    yield "marked task " + taskIndexToMark + ":\n| " + markedTask;
+                    yield "I marked this task:\n| " + markedTask;
                 }
                 case "unmark" -> {
                     int taskIndexToUnmark = Parser.parseTaskIndex(command, arguments);
@@ -119,7 +119,7 @@ public class Clara {
                         unmarkedTask.setDone(true);
                         throw ex;
                     }
-                    yield "unmarked task " + taskIndexToUnmark + ":\n| " + unmarkedTask;
+                    yield "Back to being unmarked:\n| " + unmarkedTask;
                 }
                 case "delete" -> {
                     int taskIndexToDelete = Parser.parseTaskIndex(command, arguments);
@@ -149,10 +149,10 @@ public class Clara {
                 case "deadline" -> addTask(Parser.parseDeadline(arguments));
                 case "event" -> addTask(Parser.parseEvent(arguments));
                 case "find" -> formatFindResults(Parser.parseFindQuery(arguments));
-                default -> throw new ClaraException("Unknown command: " + command);
+                default -> throw new ClaraException(command);
             };
         } catch (ClaraException ex) {
-            return "Something went wrong:\n" + ex.getMessage() + "\nTry again.";
+            return "I couldn't make sense of that:\n" + ex.getMessage() + "\nPlease try again.";
         }
     }
 
@@ -164,12 +164,13 @@ public class Clara {
     private String loadTasks() {
         try {
             TodoFileHandler.loadTasksFromDisk(tasks.getTasks());
-            return "Hello. I'm Clara. How can I assist you?\n\nLoading tasks...\nDone.";
+            return "Hello, I'm Clara. What can I help you keep track of?\n\n"
+                    + "Restoring your tasks...\nAll set.";
         } catch (ClaraException ex) {
-            return "Hello. I'm Clara. How can I assist you?\n\nLoading tasks...\n"
-                    + "Something went wrong while loading tasks:\n"
+            return "Hello, I'm Clara. What can I help you keep track of?\n\n"
+                    + "I couldn't restore your saved tasks:\n"
                     + ex.getMessage()
-                    + "\nTasks will not be loaded, and we'll start clean.";
+                    + "\nWe'll start with a clean slate.";
         }
     }
 
@@ -180,10 +181,10 @@ public class Clara {
      */
     private String formatTaskList() {
         if (tasks.isEmpty()) {
-            return "There are no tasks. Yay...?";
+            return "There are no tasks... yay?";
         }
 
-        StringBuilder response = new StringBuilder("Here are your tasks in a list:");
+        StringBuilder response = new StringBuilder("Here is what you have on your list:");
         for (int i = 0; i < tasks.size(); i++) {
             response.append("\n").append(i + 1).append(". ").append(tasks.getTasks().get(i));
         }
@@ -205,7 +206,7 @@ public class Clara {
             tasks.getTasks().remove(task);
             throw ex;
         }
-        return "added:\n| " + task + " (task #" + tasks.size() + ")";
+        return "I've added this to your list:\n| " + task + " (task #" + tasks.size() + ")";
     }
 
     /**
@@ -216,9 +217,7 @@ public class Clara {
      * @return the formatted deletion response
      */
     private String formatTaskDeleted(Task deletedTask, int taskIndex) {
-        return "deleted task "
-                + taskIndex
-                + ":\n| "
+        return "I've removed this from your list:\n| "
                 + deletedTask
                 + " ("
                 + tasks.size()
@@ -235,8 +234,7 @@ public class Clara {
      */
     private String formatFindResults(String query) {
         List<Integer> matchingIndices = tasks.findMatchingIndices(query);
-        StringBuilder response = new StringBuilder("Finding tasks with task names containing: ")
-                .append(query);
+        StringBuilder response = new StringBuilder("I found these tasks matching: ").append(query);
         for (int taskIndex : matchingIndices) {
             response.append("\n")
                     .append(taskIndex + 1)
