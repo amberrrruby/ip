@@ -5,6 +5,7 @@ import java.util.List;
 import clara.exception.ClaraException;
 import clara.parser.Parser;
 import clara.storage.TodoFileHandler;
+import clara.task.Priority;
 import clara.task.Task;
 import clara.task.TaskList;
 
@@ -114,6 +115,19 @@ public class Clara {
                     Task deletedTask = tasks.deleteTask(taskIndexToDelete);
                     TodoFileHandler.flushTasksToDisk(tasks.getTasks());
                     yield formatTaskDeleted(deletedTask, taskIndexToDelete);
+                }
+                // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
+                case "priority" -> {
+                    String[] priorityArguments = arguments.split("\\s+", 2);
+                    if (priorityArguments.length != 2) {
+                        throw new ClaraException("Use: priority <task number> <low|medium|high>.");
+                    }
+                    int taskIndex = Parser.parseTaskIndex(command, priorityArguments[0]);
+                    Priority priority = Parser.parsePriority(priorityArguments[1]);
+                    Task task = tasks.getTask(taskIndex);
+                    task.setPriority(priority);
+                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                    yield "changed priority of task " + taskIndex + ":\n| " + task;
                 }
                 case "todo" -> addTask(Parser.parseTodo(arguments));
                 case "deadline" -> addTask(Parser.parseDeadline(arguments));

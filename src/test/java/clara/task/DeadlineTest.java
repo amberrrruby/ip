@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 public class DeadlineTest {
 
     @Test
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
     public void toString_uncompletedDeadline_correctFormat() {
         LocalDateTime time = LocalDateTime.of(2025, 10, 15, 18, 0);
         Deadline deadline = new Deadline("submit report", time);
@@ -24,7 +25,7 @@ public class DeadlineTest {
         assertFalse(deadline.isDone());
         assertEquals("submit report", deadline.getTaskName());
         assertEquals(time, deadline.getDeadlineTime());
-        assertEquals("[D][ ] submit report (by: Oct 15 2025, 6:00 PM)", deadline.toString());
+        assertEquals("[D][ ] Medium submit report (by: Oct 15 2025, 6:00 PM)", deadline.toString());
     }
 
     @Test
@@ -34,7 +35,7 @@ public class DeadlineTest {
         deadline.setDone(true);
 
         assertTrue(deadline.isDone());
-        assertEquals("[D][X] submit report (by: Oct 15 2025, 6:00 PM)", deadline.toString());
+        assertEquals("[D][X] Medium submit report (by: Oct 15 2025, 6:00 PM)", deadline.toString());
     }
 
     @Test

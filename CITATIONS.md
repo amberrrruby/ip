@@ -155,3 +155,15 @@ just point to the entry by ID.
 - **Source:** Codex AI assistance
 - **Citation format:** comment only
 - **Notes:** Refactoring to improve readability and comply with the course code-quality and Java coding standards: immutable formatter constants, extracted duplicate parsing and validation, centralized task-index conversion, removal of unnecessary qualifiers and undocumented capacity, and descriptive test-variable names.
+
+### [C-017] Task priority feature
+- **Type:** AI-generated
+- **Location:** `src/main/java/clara/task/Priority.java`, `Task.java`,
+  `src/main/java/clara/storage/TodoFileHandler.java`, `src/main/java/clara/Clara.java`,
+  `src/main/java/clara/parser/Parser.java`, and corresponding task/parser tests; `README.md` and
+  `docs/README.md`
+- **Source:** Codex AI assistance
+- **Citation format:** README/DG + comment only
+- **Notes:** Added task priority levels, display formatting, persistence, the `priority` command,
+  parser validation, regression tests, and user documentation.
+- **Status:** Approved, done
