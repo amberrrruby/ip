@@ -19,9 +19,9 @@ Enter `list` to display all added tasks in order.
 
 Add a task using one of these commands:
 
-- `todo <description>` — a task without a date or time.
-- `deadline <description> /by <time>` — a task due by a specified time.
-- `event <description> /from <start-time> /to <end-time>` — a task with start and end times.
+- `todo <description>` - a task without a date or time.
+- `deadline <description> /by <time>` - a task due by a specified time.
+- `event <description> /from <start-time> /to <end-time>` - a task with start and end times.
 
 Times must be of the format `yyyy-MM-dd HHmm`. Internally they are also stored that way.
 
@@ -59,7 +59,5 @@ Clara explains invalid commands and inputs, then lets you try again. For example
 ## Exiting the app
 
 Enter `bye` to exit the app.
-
-*The task priority feature was implemented with Codex AI assistance. See `CITATIONS.md` [C-018].*
 
 *Co-maintained by Codex.*
