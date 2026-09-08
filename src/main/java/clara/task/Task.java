@@ -55,6 +55,6 @@ public class Task {
     @Override
     public String toString() {
         String checkbox = "[" + (isDone ? "X" : " ") + "]";
-        return checkbox + " " + taskName;
+        return checkbox + " " + priority + " " + taskName;
     }
 }

@@ -27,7 +27,7 @@ public class EventTest {
         assertEquals(from, event.getFromTime());
         assertEquals(to, event.getToTime());
         assertEquals(
-                "[E][ ] project meeting (from: Nov 01 2025, 2:00 PM to: Nov 01 2025, 4:00 PM)",
+                "[E][ ] Medium project meeting (from: Nov 01 2025, 2:00 PM to: Nov 01 2025, 4:00 PM)",
                 event.toString());
     }
 
@@ -40,7 +40,7 @@ public class EventTest {
 
         assertTrue(event.isDone());
         assertEquals(
-                "[E][X] project meeting (from: Nov 01 2025, 2:00 PM to: Nov 01 2025, 4:00 PM)",
+                "[E][X] Medium project meeting (from: Nov 01 2025, 2:00 PM to: Nov 01 2025, 4:00 PM)",
                 event.toString());
     }
 

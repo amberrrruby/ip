@@ -19,7 +19,7 @@ public class TodoTest {
         Todo todo = new Todo("buy groceries");
         assertFalse(todo.isDone());
         assertEquals("buy groceries", todo.getTaskName());
-        assertEquals("[T][ ] buy groceries", todo.toString());
+        assertEquals("[T][ ] Medium buy groceries", todo.toString());
     }
 
     @Test
@@ -28,7 +28,7 @@ public class TodoTest {
         todo.setDone(true);
         assertTrue(todo.isDone());
         assertEquals("[T][X]", todo.toString().substring(0, 6));
-        assertEquals("[T][X] buy groceries", todo.toString());
+        assertEquals("[T][X] Medium buy groceries", todo.toString());
     }
 
     @Test

@@ -24,7 +24,7 @@ public class DeadlineTest {
         assertFalse(deadline.isDone());
         assertEquals("submit report", deadline.getTaskName());
         assertEquals(time, deadline.getDeadlineTime());
-        assertEquals("[D][ ] submit report (by: Oct 15 2025, 6:00 PM)", deadline.toString());
+        assertEquals("[D][ ] Medium submit report (by: Oct 15 2025, 6:00 PM)", deadline.toString());
     }
 
     @Test
@@ -34,7 +34,7 @@ public class DeadlineTest {
         deadline.setDone(true);
 
         assertTrue(deadline.isDone());
-        assertEquals("[D][X] submit report (by: Oct 15 2025, 6:00 PM)", deadline.toString());
+        assertEquals("[D][X] Medium submit report (by: Oct 15 2025, 6:00 PM)", deadline.toString());
     }
 
     @Test
