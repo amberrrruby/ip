@@ -6,6 +6,7 @@ package clara.task;
 public class Task {
     private String taskName;
     private boolean isDone;
+    private Priority priority;
 
     /**
      * Creates a task with the specified name.
@@ -17,6 +18,7 @@ public class Task {
         assert taskName != null && !taskName.isBlank() : "Task name must not be blank";
         this.taskName = taskName;
         this.isDone = false;
+        this.priority = Priority.MEDIUM;
     }
 
     public String getTaskName() {
@@ -34,6 +36,15 @@ public class Task {
 
     public void setDone(boolean newIsDone) {
         isDone = newIsDone;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority newPriority) {
+        assert newPriority != null : "Priority must not be null";
+        priority = newPriority;
     }
 
     /**
