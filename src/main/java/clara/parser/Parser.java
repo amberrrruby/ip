@@ -7,6 +7,7 @@ import java.time.format.DateTimeParseException;
 import clara.exception.ClaraException;
 import clara.task.Deadline;
 import clara.task.Event;
+import clara.task.Priority;
 import clara.task.Todo;
 
 /**
@@ -46,6 +47,22 @@ public class Parser {
             // NOTE: Used to be AI-assisted invalid-index input validation. See CITATIONS.md [C-001].
             throw new ClaraException("Use: " + command + " <task number>.");
         }
+    }
+
+    /**
+     * Parses a priority supplied in a priority command.
+     *
+     * @param priorityText the priority text to parse
+     * @return the matching task priority
+     * @throws ClaraException if the priority is not low, medium, or high
+     */
+    public static Priority parsePriority(final String priorityText) throws ClaraException {
+        return switch (priorityText) {
+            case "low" -> Priority.LOW;
+            case "medium" -> Priority.MEDIUM;
+            case "high" -> Priority.HIGH;
+            default -> throw new ClaraException("Use: priority <task number> <low|medium|high>.");
+        };
     }
 
     // NOTE: AI-assisted task-command input validation. See CITATIONS.md [C-002].
