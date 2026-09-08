@@ -5,12 +5,14 @@ import java.util.List;
 import clara.exception.ClaraException;
 import clara.parser.Parser;
 import clara.storage.TodoFileHandler;
+import clara.task.Priority;
 import clara.task.Task;
 import clara.task.TaskList;
 
 // NOTE: AI-assisted OOP refactoring and extraction of responsibilites.
 // See CITATIONS.md [C-009].
 // AI-assisted GUI command-response integration. See CITATIONS.md [C-013].
+// AI-assisted persistence-failure rollback. See CITATIONS.md [C-017].
 
 /**
  * Represents the main application for Clara, a simple task management chatbot.
@@ -100,25 +102,53 @@ public class Clara {
                 case "mark" -> {
                     int taskIndexToMark = Parser.parseTaskIndex(command, arguments);
                     Task markedTask = tasks.markTask(taskIndexToMark);
-                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                    try {
+                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                    } catch (ClaraException ex) {
+                        markedTask.setDone(false);
+                        throw ex;
+                    }
                     yield "I marked this task:\n| " + markedTask;
                 }
                 case "unmark" -> {
                     int taskIndexToUnmark = Parser.parseTaskIndex(command, arguments);
                     Task unmarkedTask = tasks.unmarkTask(taskIndexToUnmark);
-                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                    try {
+                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                    } catch (ClaraException ex) {
+                        unmarkedTask.setDone(true);
+                        throw ex;
+                    }
                     yield "Back to being unmarked:\n| " + unmarkedTask;
                 }
                 case "delete" -> {
                     int taskIndexToDelete = Parser.parseTaskIndex(command, arguments);
                     Task deletedTask = tasks.deleteTask(taskIndexToDelete);
-                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                    try {
+                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                    } catch (ClaraException ex) {
+                        tasks.getTasks().add(taskIndexToDelete - 1, deletedTask);
+                        throw ex;
+                    }
                     yield formatTaskDeleted(deletedTask, taskIndexToDelete);
+                }
+                // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
+                case "priority" -> {
+                    String[] priorityArguments = arguments.split("\\s+", 2);
+                    if (priorityArguments.length != 2) {
+                        throw new ClaraException("Use: priority <task number> <low|medium|high>.");
+                    }
+                    int taskIndex = Parser.parseTaskIndex(command, priorityArguments[0]);
+                    Priority priority = Parser.parsePriority(priorityArguments[1]);
+                    Task task = tasks.getTask(taskIndex);
+                    task.setPriority(priority);
+                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+                    yield "changed priority of task " + taskIndex + ":\n| " + task;
                 }
                 case "todo" -> addTask(Parser.parseTodo(arguments));
                 case "deadline" -> addTask(Parser.parseDeadline(arguments));
                 case "event" -> addTask(Parser.parseEvent(arguments));
-                case "find" -> formatFindResults(arguments);
+                case "find" -> formatFindResults(Parser.parseFindQuery(arguments));
                 default -> throw new ClaraException(command);
             };
         } catch (ClaraException ex) {
@@ -170,7 +200,12 @@ public class Clara {
      */
     private String addTask(Task task) throws ClaraException {
         tasks.addTask(task);
-        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+        try {
+            TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+        } catch (ClaraException ex) {
+            tasks.getTasks().remove(task);
+            throw ex;
+        }
         return "I've added this to your list:\n| " + task + " (task #" + tasks.size() + ")";
     }
 

@@ -6,6 +6,8 @@ package clara.task;
 public class Task {
     private String taskName;
     private boolean isDone;
+    // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-017].
+    private Priority priority;
 
     /**
      * Creates a task with the specified name.
@@ -17,6 +19,7 @@ public class Task {
         assert taskName != null && !taskName.isBlank() : "Task name must not be blank";
         this.taskName = taskName;
         this.isDone = false;
+        this.priority = Priority.MEDIUM;
     }
 
     public String getTaskName() {
@@ -36,6 +39,15 @@ public class Task {
         isDone = newIsDone;
     }
 
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority newPriority) {
+        assert newPriority != null : "Priority must not be null";
+        priority = newPriority;
+    }
+
     /**
      * Returns a string representation of the task, including its completion status.
      *
@@ -44,6 +56,6 @@ public class Task {
     @Override
     public String toString() {
         String checkbox = "[" + (isDone ? "X" : " ") + "]";
-        return checkbox + " " + taskName;
+        return checkbox + " " + priority + " " + taskName;
     }
 }

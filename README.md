@@ -2,7 +2,8 @@
 
 A JavaFX personal assistant chatbot built in Java as part of the NUS CS2103/T Individual Project.
 
-Clara supports adding, listing, marking, unmarking, deleting, and automatically saving tasks.
+Clara supports adding, listing, marking, unmarking, deleting, changing task priorities, and
+automatically saving tasks.
 
 ## Getting Started
 
@@ -29,6 +30,7 @@ The project will gradually be expanded as new functionality is introduced.
 ├── docs/
 │   └── README.md       # Guide targeted for users
 ├── src/
+│   ├── test/ # JUnit tests
 │   └── main/
 │       └── java/
 │           └── clara/
@@ -46,6 +48,7 @@ The project will gradually be expanded as new functionality is introduced.
 │               ├── task/
 │               │   ├── Deadline.java        # Deadline task model
 │               │   ├── Event.java           # Event task model
+│               │   ├── Priority.java        # Task priority levels
 │               │   ├── Task.java            # Base task model
 │               │   ├── TaskList.java        # Task list manager
 │               │   └── Todo.java            # To-do task model
@@ -86,6 +89,8 @@ This project is currently at: **Level 10**. It will be developed incrementally t
 
 The Clara and user avatar illustrations in the GUI were generated using OpenAI image generation
 through Codex. See `CITATIONS.md` [C-014].
+
+The task priority feature was implemented with Codex AI assistance. See `CITATIONS.md` [C-017].
 
 
 *Level 0 README: Generated and modified from a [ChatGPT chat thread](https://chatgpt.com/share/6a7dd837-21bc-83ec-824e-6ab1b746ac1f).* 
