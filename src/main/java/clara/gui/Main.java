@@ -27,6 +27,9 @@ public class Main extends Application {
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setClara(clara);
             stage.setTitle("Clara");
+            stage.setMinWidth(360);
+            stage.setMinHeight(420);
+            stage.setResizable(true);
             stage.show();
         } catch (IOException exception) {
             throw new IllegalStateException("Unable to load Clara's main window.", exception);
