@@ -12,6 +12,7 @@ import clara.task.TaskList;
 // NOTE: AI-assisted OOP refactoring and extraction of responsibilites.
 // See CITATIONS.md [C-009].
 // AI-assisted GUI command-response integration. See CITATIONS.md [C-013].
+// NOTE: AI-assisted GUI response-state support. See CITATIONS.md [C-019].
 // AI-assisted persistence-failure rollback. See CITATIONS.md [C-017].
 
 /**

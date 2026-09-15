@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
 // AI-assisted JavaFX GUI implementation. See CITATIONS.md [C-013].
+// NOTE: AI-assisted GUI polish. See CITATIONS.md [C-019].
 
 /**
  * Controller for Clara's main GUI.

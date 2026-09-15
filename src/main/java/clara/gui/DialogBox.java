@@ -17,6 +17,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.shape.Circle;
 
 // AI-assisted JavaFX GUI implementation. See CITATIONS.md [C-013].
+// NOTE: AI-assisted GUI polish. See CITATIONS.md [C-019].
 
 /**
  * A dialog box containing a speaker image and message text.

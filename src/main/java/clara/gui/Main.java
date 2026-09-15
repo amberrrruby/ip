@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 // AI-assisted JavaFX GUI implementation. See CITATIONS.md [C-013].
+// NOTE: AI-assisted GUI polish. See CITATIONS.md [C-019].
 
 /**
  * JavaFX GUI for Clara.
