@@ -13,8 +13,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.shape.Circle;
 
 // AI-assisted JavaFX GUI implementation. See CITATIONS.md [C-013].
+// NOTE: AI-assisted GUI polish. See CITATIONS.md [C-019].
 
 /**
  * A dialog box containing a speaker image and message text.
@@ -38,17 +41,21 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(image);
+        displayPicture.setClip(new Circle(24, 24, 24));
     }
 
     /**
      * Creates a right-aligned dialog for the user.
      *
      * @param text  the user's message
-     * @param image the user's avatar
      * @return a user dialog box
      */
-    public static DialogBox getUserDialog(String text, Image image) {
-        return new DialogBox(text, image);
+    public static DialogBox getUserDialog(String text) {
+        DialogBox dialogBox = new DialogBox(text, null);
+        dialogBox.displayPicture.setManaged(false);
+        dialogBox.displayPicture.setVisible(false);
+        dialogBox.limitMessageWidth(0.72);
+        return dialogBox;
     }
 
     /**
@@ -58,9 +65,13 @@ public class DialogBox extends HBox {
      * @param image Clara's avatar
      * @return a Clara dialog box
      */
-    public static DialogBox getClaraDialog(String text, Image image) {
+    public static DialogBox getClaraDialog(String text, Image image, boolean isInputError) {
         DialogBox dialogBox = new DialogBox(text, image);
         dialogBox.flip();
+        dialogBox.limitMessageWidth(0.84);
+        if (isInputError) {
+            dialogBox.dialog.getStyleClass().add("error-label");
+        }
         return dialogBox;
     }
 
@@ -73,5 +84,15 @@ public class DialogBox extends HBox {
         getChildren().setAll(children);
         setAlignment(Pos.TOP_LEFT);
         dialog.getStyleClass().add("reply-label");
+    }
+
+    /**
+     * Caps a message bubble at a proportion of the available conversation width.
+     *
+     * @param widthRatio the largest fraction of this dialog box the bubble may use
+     */
+    private void limitMessageWidth(double widthRatio) {
+        dialog.maxWidthProperty().bind(widthProperty().multiply(widthRatio));
+        HBox.setHgrow(dialog, Priority.NEVER);
     }
 }

@@ -9,13 +9,12 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
 // AI-assisted JavaFX GUI implementation. See CITATIONS.md [C-013].
+// NOTE: AI-assisted GUI polish. See CITATIONS.md [C-019].
 
 /**
  * Controller for Clara's main GUI.
  */
 public class MainWindow {
-    private final Image userImage = new Image(
-            getClass().getResourceAsStream("/images/ClaraUser.png"));
     private final Image claraImage = new Image(
             getClass().getResourceAsStream("/images/Clara.png"));
 
@@ -44,7 +43,7 @@ public class MainWindow {
     public void setClara(Clara clara) {
         this.clara = clara;
         dialogContainer.getChildren().add(
-                DialogBox.getClaraDialog(clara.getStartupMessage(), claraImage));
+                DialogBox.getClaraDialog(clara.getStartupMessage(), claraImage, false));
     }
 
     /**
@@ -55,8 +54,8 @@ public class MainWindow {
         String input = userInput.getText();
         String response = clara.getResponse(input);
         dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
-                DialogBox.getClaraDialog(response, claraImage));
+                DialogBox.getUserDialog(input),
+                DialogBox.getClaraDialog(response, claraImage, clara.isInputError(response)));
         userInput.clear();
         if (clara.shouldExit()) {
             Platform.exit();

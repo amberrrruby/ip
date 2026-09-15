@@ -12,6 +12,7 @@ import clara.task.TaskList;
 // NOTE: AI-assisted OOP refactoring and extraction of responsibilites.
 // See CITATIONS.md [C-009].
 // AI-assisted GUI command-response integration. See CITATIONS.md [C-013].
+// NOTE: AI-assisted GUI response-state support. See CITATIONS.md [C-019].
 // AI-assisted persistence-failure rollback. See CITATIONS.md [C-017].
 
 /**
@@ -19,6 +20,7 @@ import clara.task.TaskList;
  */
 public class Clara {
     private static final String CLARA_HEADER = "[Clara] ";
+    private static final String INPUT_ERROR_PREFIX = "I couldn't make sense of that:";
 
     private final TaskList tasks;
     private final String startupMessage;
@@ -152,8 +154,18 @@ public class Clara {
                 default -> throw new ClaraException(command);
             };
         } catch (ClaraException ex) {
-            return "I couldn't make sense of that:\n" + ex.getMessage() + "\nPlease try again.";
+            return INPUT_ERROR_PREFIX + "\n" + ex.getMessage() + "\nPlease try again.";
         }
+    }
+
+    /**
+     * Indicates whether a response reports an invalid user command.
+     *
+     * @param response the response to inspect
+     * @return whether the response is an input error
+     */
+    public boolean isInputError(String response) {
+        return response.startsWith(INPUT_ERROR_PREFIX);
     }
 
     /**

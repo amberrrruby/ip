@@ -174,3 +174,11 @@ just point to the entry by ID.
 - **Notes:** Added task priority levels, display formatting, persistence, the `priority` command,
   parser validation, regression tests, and user documentation.
 - **Status:** Approved, done
+
+### [C-019] GUI polish and input-error styling
+- **Type:** AI-generated
+- **Location:** `src/main/java/clara/Clara.java` — GUI input-error response state; `src/main/java/clara/gui/Main.java`, `MainWindow.java`, and `DialogBox.java`; `src/main/resources/view/MainWindow.fxml` and `DialogBox.fxml`; `src/main/resources/css/main.css` and `dialog-box.css`
+- **Source:** Codex AI assistance
+- **Citation format:** comment only
+- **Notes:** Refined the JavaFX interface with an asymmetric command-and-response layout, compact circular assistant avatar, responsive message widths, improved composer and header styling, explicit window resize bounds, and distinct input-error presentation.
+- **Status:** Approved, done
