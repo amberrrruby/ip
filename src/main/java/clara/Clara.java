@@ -92,61 +92,13 @@ public class Clara {
             String command = userInput[0];
             String arguments = userInput.length == 2 ? userInput[1] : "";
             return switch (command) {
-                case "bye" -> {
-                    Parser.requireNoArguments(command, arguments);
-                    shouldExit = true;
-                    yield "All noted. See you next time.";
-                }
-                case "list" -> {
-                    Parser.requireNoArguments(command, arguments);
-                    yield formatTaskList();
-                }
-                case "mark" -> {
-                    int taskIndexToMark = Parser.parseTaskIndex(command, arguments);
-                    Task markedTask = tasks.markTask(taskIndexToMark);
-                    try {
-                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
-                    } catch (ClaraException ex) {
-                        markedTask.setDone(false);
-                        throw ex;
-                    }
-                    yield "I marked this task:\n" + markedTask;
-                }
-                case "unmark" -> {
-                    int taskIndexToUnmark = Parser.parseTaskIndex(command, arguments);
-                    Task unmarkedTask = tasks.unmarkTask(taskIndexToUnmark);
-                    try {
-                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
-                    } catch (ClaraException ex) {
-                        unmarkedTask.setDone(true);
-                        throw ex;
-                    }
-                    yield "Back to being unmarked:\n" + unmarkedTask;
-                }
-                case "delete" -> {
-                    int taskIndexToDelete = Parser.parseTaskIndex(command, arguments);
-                    Task deletedTask = tasks.deleteTask(taskIndexToDelete);
-                    try {
-                        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
-                    } catch (ClaraException ex) {
-                        tasks.getTasks().add(taskIndexToDelete - 1, deletedTask);
-                        throw ex;
-                    }
-                    yield formatTaskDeleted(deletedTask, taskIndexToDelete);
-                }
+                case "bye" -> handleBye(command, arguments);
+                case "list" -> handleList(command, arguments);
+                case "mark" -> markTask(command, arguments);
+                case "unmark" -> unmarkTask(command, arguments);
+                case "delete" -> deleteTask(command, arguments);
                 // NOTE: AI-assisted task priority feature. See CITATIONS.md [C-018].
-                case "priority" -> {
-                    String[] priorityArguments = arguments.split("\\s+", 2);
-                    if (priorityArguments.length != 2) {
-                        throw new ClaraException("Use: priority <task number> <low|medium|high>.");
-                    }
-                    int taskIndex = Parser.parseTaskIndex(command, priorityArguments[0]);
-                    Priority priority = Parser.parsePriority(priorityArguments[1]);
-                    Task task = tasks.getTask(taskIndex);
-                    task.setPriority(priority);
-                    TodoFileHandler.flushTasksToDisk(tasks.getTasks());
-                    yield "Changed priority of task " + taskIndex + ":\n" + task;
-                }
+                case "priority" -> changeTaskPriority(command, arguments);
                 case "todo" -> addTask(Parser.parseTodo(arguments));
                 case "deadline" -> addTask(Parser.parseDeadline(arguments));
                 case "event" -> addTask(Parser.parseEvent(arguments));
@@ -156,6 +108,114 @@ public class Clara {
         } catch (ClaraException ex) {
             return INPUT_ERROR_PREFIX + "\n" + ex.getMessage() + "\nPlease try again.";
         }
+    }
+
+    /**
+     * Handles the {@code bye} command.
+     *
+     * @param command the command name
+     * @param arguments the supplied command arguments
+     * @return the farewell response
+     * @throws ClaraException if arguments were supplied
+     */
+    private String handleBye(String command, String arguments) throws ClaraException {
+        Parser.requireNoArguments(command, arguments);
+        shouldExit = true;
+        return "All noted. See you next time.";
+    }
+
+    /**
+     * Handles the {@code list} command.
+     *
+     * @param command the command name
+     * @param arguments the supplied command arguments
+     * @return the formatted task list
+     * @throws ClaraException if arguments were supplied
+     */
+    private String handleList(String command, String arguments) throws ClaraException {
+        Parser.requireNoArguments(command, arguments);
+        return formatTaskList();
+    }
+
+    /**
+     * Marks a task as done and restores its original state if saving fails.
+     *
+     * @param command the command name
+     * @param arguments the supplied task index
+     * @return the mark confirmation
+     * @throws ClaraException if the task index is invalid or saving fails
+     */
+    private String markTask(String command, String arguments) throws ClaraException {
+        int taskIndex = Parser.parseTaskIndex(command, arguments);
+        Task task = tasks.markTask(taskIndex);
+        try {
+            TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+        } catch (ClaraException ex) {
+            task.setDone(false);
+            throw ex;
+        }
+        return "I marked this task:\n" + task;
+    }
+
+    /**
+     * Marks a task as not done and restores its original state if saving fails.
+     *
+     * @param command the command name
+     * @param arguments the supplied task index
+     * @return the unmark confirmation
+     * @throws ClaraException if the task index is invalid or saving fails
+     */
+    private String unmarkTask(String command, String arguments) throws ClaraException {
+        int taskIndex = Parser.parseTaskIndex(command, arguments);
+        Task task = tasks.unmarkTask(taskIndex);
+        try {
+            TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+        } catch (ClaraException ex) {
+            task.setDone(true);
+            throw ex;
+        }
+        return "Back to being unmarked:\n" + task;
+    }
+
+    /**
+     * Deletes a task and restores it at its original position if saving fails.
+     *
+     * @param command the command name
+     * @param arguments the supplied task index
+     * @return the deletion confirmation
+     * @throws ClaraException if the task index is invalid or saving fails
+     */
+    private String deleteTask(String command, String arguments) throws ClaraException {
+        int taskIndex = Parser.parseTaskIndex(command, arguments);
+        Task task = tasks.deleteTask(taskIndex);
+        try {
+            TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+        } catch (ClaraException ex) {
+            tasks.getTasks().add(taskIndex - 1, task);
+            throw ex;
+        }
+        return formatTaskDeleted(task, taskIndex);
+    }
+
+    /**
+     * Changes a task's priority and saves the updated task list.
+     *
+     * @param command the command name
+     * @param arguments the supplied task index and priority
+     * @return the priority-change confirmation
+     * @throws ClaraException if the arguments are invalid or saving fails
+     */
+    private String changeTaskPriority(String command, String arguments) throws ClaraException {
+        String[] priorityArguments = arguments.split("\\s+", 2);
+        if (priorityArguments.length != 2) {
+            throw new ClaraException("Use: priority <task number> <low|medium|high>.");
+        }
+        int taskIndex = Parser.parseTaskIndex(command, priorityArguments[0]);
+        Priority priority = Parser.parsePriority(priorityArguments[1]);
+        Task task = tasks.getTask(taskIndex);
+        task.setPriority(priority);
+        TodoFileHandler.flushTasksToDisk(tasks.getTasks());
+        return "Changed priority of task " + taskIndex + ":\n" + task;
     }
 
     /**

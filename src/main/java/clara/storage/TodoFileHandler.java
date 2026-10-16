@@ -78,59 +78,128 @@ public class TodoFileHandler {
      * @throws ClaraException if the line is malformed or contains invalid task data
      */
     private static Task parseLine(final String line) throws ClaraException {
+        String[] arguments = splitLine(line);
+        validateStatus(arguments);
+        Priority priority = parsePriority(arguments[PRIORITY_FIELD_INDEX]);
+        validateTitle(arguments);
+        try {
+            Task task = createTask(arguments);
+            task.setDone(arguments[STATUS_FIELD_INDEX].equals(DONE_STATUS));
+            task.setPriority(priority);
+            return task;
+        } catch (DateTimeParseException ex) {
+            throw new ClaraException("Saved task has an invalid date or time.");
+        }
+    }
+
+    /**
+     * Splits a serialized task line and validates its overall structure.
+     *
+     * @param line the serialized task line
+     * @return the individual serialized fields
+     * @throws ClaraException if the line is blank or does not contain six fields
+     */
+    private static String[] splitLine(String line) throws ClaraException {
         if (line.isBlank()) {
             throw new ClaraException("Saved task line cannot be empty.");
         }
-        final String[] arguments = line.split(FIELD_SEPARATOR_PATTERN, PRESERVE_TRAILING_EMPTY_FIELDS);
+        String[] arguments = line.split(FIELD_SEPARATOR_PATTERN, PRESERVE_TRAILING_EMPTY_FIELDS);
         if (arguments.length != FIELD_COUNT) {
             throw new ClaraException("Saved task has an invalid number of fields.");
         }
+        return arguments;
+    }
+
+    /**
+     * Validates the completion-status field in a serialized task.
+     *
+     * @param arguments the serialized task fields
+     * @throws ClaraException if the status is not a supported code
+     */
+    private static void validateStatus(String[] arguments) throws ClaraException {
         if (!arguments[STATUS_FIELD_INDEX].equals(DONE_STATUS)
                 && !arguments[STATUS_FIELD_INDEX].equals(NOT_DONE_STATUS)) {
             throw new ClaraException("Saved task has an invalid status.");
         }
-        Priority priority = parsePriority(arguments[PRIORITY_FIELD_INDEX]);
+    }
+
+    /**
+     * Validates the title field in a serialized task.
+     *
+     * @param arguments the serialized task fields
+     * @throws ClaraException if the title is blank
+     */
+    private static void validateTitle(String[] arguments) throws ClaraException {
         if (arguments[TITLE_FIELD_INDEX].isBlank()) {
             throw new ClaraException("Saved task needs a title.");
         }
+    }
 
-        Task task;
-        try {
-            task = switch (arguments[TYPE_FIELD_INDEX]) {
-                case TODO_TYPE -> {
-                    if (!arguments[FIRST_TIME_FIELD_INDEX].isEmpty()
-                            || !arguments[SECOND_TIME_FIELD_INDEX].isEmpty()) {
-                        throw new ClaraException("Saved todo task must not have times.");
-                    }
-                    yield new Todo(arguments[TITLE_FIELD_INDEX]);
-                }
-                case DEADLINE_TYPE -> {
-                    if (arguments[FIRST_TIME_FIELD_INDEX].isBlank()
-                            || !arguments[SECOND_TIME_FIELD_INDEX].isEmpty()) {
-                        throw new ClaraException("Saved deadline task has invalid times.");
-                    }
-                    yield new Deadline(arguments[TITLE_FIELD_INDEX], parseDateTime(arguments[FIRST_TIME_FIELD_INDEX]));
-                }
-                case EVENT_TYPE -> {
-                    if (arguments[FIRST_TIME_FIELD_INDEX].isBlank()
-                            || arguments[SECOND_TIME_FIELD_INDEX].isBlank()) {
-                        throw new ClaraException("Saved event task needs start and end times.");
-                    }
-                    LocalDateTime fromTime = parseDateTime(arguments[FIRST_TIME_FIELD_INDEX]);
-                    LocalDateTime toTime = parseDateTime(arguments[SECOND_TIME_FIELD_INDEX]);
-                    if (!fromTime.isBefore(toTime)) {
-                        throw new ClaraException("Saved event must start before it ends.");
-                    }
-                    yield new Event(arguments[TITLE_FIELD_INDEX], fromTime, toTime);
-                }
-                default -> throw new ClaraException("Saved task has an unknown type.");
-            };
-        } catch (DateTimeParseException ex) {
-            throw new ClaraException("Saved task has an invalid date or time.");
+    /**
+     * Creates the task represented by the type-specific serialized fields.
+     *
+     * @param arguments the serialized task fields
+     * @return the created task without its status or priority applied
+     * @throws ClaraException if the type or its fields are invalid
+     */
+    private static Task createTask(String[] arguments) throws ClaraException {
+        return switch (arguments[TYPE_FIELD_INDEX]) {
+            case TODO_TYPE -> createTodo(arguments);
+            case DEADLINE_TYPE -> createDeadline(arguments);
+            case EVENT_TYPE -> createEvent(arguments);
+            default -> throw new ClaraException("Saved task has an unknown type.");
+        };
+    }
+
+    /**
+     * Creates a todo task after validating that it has no time fields.
+     *
+     * @param arguments the serialized task fields
+     * @return the created todo task
+     * @throws ClaraException if either time field is present
+     */
+    private static Todo createTodo(String[] arguments) throws ClaraException {
+        if (!arguments[FIRST_TIME_FIELD_INDEX].isEmpty()
+                || !arguments[SECOND_TIME_FIELD_INDEX].isEmpty()) {
+            throw new ClaraException("Saved todo task must not have times.");
         }
-        task.setDone(arguments[STATUS_FIELD_INDEX].equals(DONE_STATUS));
-        task.setPriority(priority);
-        return task;
+        return new Todo(arguments[TITLE_FIELD_INDEX]);
+    }
+
+    /**
+     * Creates a deadline task after validating its time fields.
+     *
+     * @param arguments the serialized task fields
+     * @return the created deadline task
+     * @throws ClaraException if the deadline fields are invalid
+     */
+    private static Deadline createDeadline(String[] arguments) throws ClaraException {
+        if (arguments[FIRST_TIME_FIELD_INDEX].isBlank()
+                || !arguments[SECOND_TIME_FIELD_INDEX].isEmpty()) {
+            throw new ClaraException("Saved deadline task has invalid times.");
+        }
+        return new Deadline(
+                arguments[TITLE_FIELD_INDEX], parseDateTime(arguments[FIRST_TIME_FIELD_INDEX]));
+    }
+
+    /**
+     * Creates an event task after validating its time fields and ordering.
+     *
+     * @param arguments the serialized task fields
+     * @return the created event task
+     * @throws ClaraException if either time is missing or the event does not end after it starts
+     */
+    private static Event createEvent(String[] arguments) throws ClaraException {
+        if (arguments[FIRST_TIME_FIELD_INDEX].isBlank()
+                || arguments[SECOND_TIME_FIELD_INDEX].isBlank()) {
+            throw new ClaraException("Saved event task needs start and end times.");
+        }
+        LocalDateTime fromTime = parseDateTime(arguments[FIRST_TIME_FIELD_INDEX]);
+        LocalDateTime toTime = parseDateTime(arguments[SECOND_TIME_FIELD_INDEX]);
+        if (!fromTime.isBefore(toTime)) {
+            throw new ClaraException("Saved event must start before it ends.");
+        }
+        return new Event(arguments[TITLE_FIELD_INDEX], fromTime, toTime);
     }
 
     /**
