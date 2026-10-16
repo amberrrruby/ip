@@ -4,6 +4,8 @@ Clara is a personal assistant that manages a list of tasks.
 
 ## Using the graphical interface
 
+<img width="511" height="675" alt="Image" src="https://github.com/user-attachments/assets/4569f768-f52a-47c5-95ac-3a9eb915a630" />
+
 Run Clara to open its chat window. Type a command in the text field at the bottom, then press
 `Enter` or select `Send`. Your messages appear on the right, while Clara's replies appear on the
 left. The conversation scrolls automatically as new messages are added.
