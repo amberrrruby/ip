@@ -53,7 +53,7 @@ You: todo buy groceries
 
 Clara:
 I've added this to your list:
-[ ] Medium buy groceries (task #1)
+[T][ ] Medium buy groceries (task #1)
 ```
 
 ```text
@@ -69,7 +69,7 @@ You: priority 1 high
 
 Clara:
 Changed priority of task 1:
-[ ] High buy groceries
+[T][ ] High buy groceries
 ```
 
 ```text
@@ -77,7 +77,7 @@ You: list
 
 Clara:
 Here is what you have on your list:
-1. [ ] High buy groceries
+1. [T][ ] High buy groceries
 2. [D][ ] Medium submit report (by: Dec 01 2026, 11:59 PM)
 ```
 
