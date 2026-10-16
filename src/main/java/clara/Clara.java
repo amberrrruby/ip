@@ -110,7 +110,7 @@ public class Clara {
                         markedTask.setDone(false);
                         throw ex;
                     }
-                    yield "I marked this task:\n| " + markedTask;
+                    yield "I marked this task:\n" + markedTask;
                 }
                 case "unmark" -> {
                     int taskIndexToUnmark = Parser.parseTaskIndex(command, arguments);
@@ -121,7 +121,7 @@ public class Clara {
                         unmarkedTask.setDone(true);
                         throw ex;
                     }
-                    yield "Back to being unmarked:\n| " + unmarkedTask;
+                    yield "Back to being unmarked:\n" + unmarkedTask;
                 }
                 case "delete" -> {
                     int taskIndexToDelete = Parser.parseTaskIndex(command, arguments);
@@ -145,7 +145,7 @@ public class Clara {
                     Task task = tasks.getTask(taskIndex);
                     task.setPriority(priority);
                     TodoFileHandler.flushTasksToDisk(tasks.getTasks());
-                    yield "changed priority of task " + taskIndex + ":\n| " + task;
+                    yield "Changed priority of task " + taskIndex + ":\n" + task;
                 }
                 case "todo" -> addTask(Parser.parseTodo(arguments));
                 case "deadline" -> addTask(Parser.parseDeadline(arguments));
@@ -218,7 +218,7 @@ public class Clara {
             tasks.getTasks().remove(task);
             throw ex;
         }
-        return "I've added this to your list:\n| " + task + " (task #" + tasks.size() + ")";
+        return "I've added this to your list:\n" + task + " (task #" + tasks.size() + ")";
     }
 
     /**
@@ -229,7 +229,7 @@ public class Clara {
      * @return the formatted deletion response
      */
     private String formatTaskDeleted(Task deletedTask, int taskIndex) {
-        return "I've removed this from your list:\n| "
+        return "I've removed this from your list:\n"
                 + deletedTask
                 + " ("
                 + tasks.size()

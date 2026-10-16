@@ -93,7 +93,7 @@ public class TaskList {
         Task task = getTask(taskIndex);
         if (task.isDone()) {
             throw new ClaraException(
-                    "Oops - Task " + taskIndex + " is already marked:\n| " + task.getTaskName());
+                    "Oops - Task " + taskIndex + " is already marked:\n" + task.getTaskName());
         }
         task.setDone(true);
         return task;
@@ -110,7 +110,7 @@ public class TaskList {
         Task task = getTask(taskIndex);
         if (!task.isDone()) {
             throw new ClaraException(
-                    "Oops - Task " + taskIndex + " is already unmarked:\n| " + task.getTaskName());
+                    "Oops - Task " + taskIndex + " is already unmarked:\n" + task.getTaskName());
         }
         task.setDone(false);
         return task;
@@ -136,7 +136,7 @@ public class TaskList {
      */
     private int toListIndex(int taskIndex) throws ClaraException {
         if (taskIndex < FIRST_TASK_INDEX || taskIndex > tasks.size()) {
-            throw new ClaraException("Index out of bounds: given is " + taskIndex);
+            throw new ClaraException("There is no task " + taskIndex + ".");
         }
         return taskIndex - FIRST_TASK_INDEX;
     }

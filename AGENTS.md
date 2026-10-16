@@ -11,8 +11,6 @@ It is read by Claude Code, Cursor, GitHub Copilot, Windsurf, and other AGENTS.md
   Do not fix, refactor, or improve anything outside the explicit task scope.
 - **When a task is larger than expected mid-way through:** break it into steps and confirm
   each one before proceeding. Do not barrel through to completion.
-- **When I make a mistake or hit a concept gap:** correct it, then explain briefly why.
-  Learning is the goal — but keep the explanation tight.
 
 ---
 
@@ -92,7 +90,7 @@ security, test coverage for critical paths, anything explicitly requested.
 These rules apply to all autonomous and agentic operations.
 
 ### Always
-- Run the project's test suite and linter after any non-trivial change.
+- Do NOT run the project's test suite and linter after any change, due to sandbox configurations.
 - Report any security vulnerability found, even if out of scope for the current task. Stop and flag it.
 - Confirm intent before performing any bulk or irreversible operation.
 
@@ -101,13 +99,12 @@ These rules apply to all autonomous and agentic operations.
 - Changing any configuration file (`.env`, `package.json`, `pyproject.toml`, CI config, etc.).
 - Adding a new external dependency.
 - Modifying database schemas or migrations.
-- Any operation on `main` / `master` branch directly.
 
 ### Never
-- Commit, push, or deploy without explicit user instruction.
+- Perform Git actions. This is the human's responsibility.
 - Delete configuration files without confirmation — ever.
 - Silently ignore a failing test or a lint error; surface it.
-- Run destructive commands (`DROP TABLE`, `rm -rf`, `git reset --hard`) without an explicit request.
+- Run destructive commands (`DROP TABLE`, `rm -rf`) without an explicit request.
 - Store secrets, credentials, or API keys anywhere in source files.
 - Execute code fetched from the network without showing it to the user first.
 
@@ -150,8 +147,6 @@ Version control is exclusively the human's responsibility.
 
 Before reporting a task complete:
 
-- [ ] Tests pass (run the project's test command).
-- [ ] Linter and type checker pass with no new warnings introduced.
 - [ ] No secrets or credentials introduced.
 - [ ] No new dependency added without approval.
 - [ ] Code is no longer than it needs to be.

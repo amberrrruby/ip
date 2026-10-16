@@ -113,7 +113,7 @@ public class Ui {
      */
     public void showTaskAdded(Task task, int totalTasks) {
         String echoString =
-                CLARA_HEADER + "added:\n| " + task.toString() + " (task #" + totalTasks + ")";
+                CLARA_HEADER + "added:\n" + task.toString() + " (task #" + totalTasks + ")";
         System.out.println(echoString);
     }
 
@@ -124,7 +124,7 @@ public class Ui {
      * @param taskIndex the 1-based index of the task
      */
     public void showTaskMarked(Task task, int taskIndex) {
-        String echoString = CLARA_HEADER + "marked task " + taskIndex + ":\n| " + task.toString();
+        String echoString = CLARA_HEADER + "marked task " + taskIndex + ":\n" + task.toString();
         System.out.println(echoString);
     }
 
@@ -135,7 +135,7 @@ public class Ui {
      * @param taskIndex the 1-based index of the task
      */
     public void showTaskUnmarked(Task task, int taskIndex) {
-        String echoString = CLARA_HEADER + "unmarked task " + taskIndex + ":\n| " + task.toString();
+        String echoString = CLARA_HEADER + "unmarked task " + taskIndex + ":\n" + task.toString();
         System.out.println(echoString);
     }
 
@@ -151,7 +151,7 @@ public class Ui {
                 CLARA_HEADER
                         + "deleted task "
                         + taskIndex
-                        + ":\n| "
+                        + ":\n"
                         + task
                         + " ("
                         + remainingTasks

@@ -50,7 +50,7 @@ priority. When Clara starts, it restores the previously saved task list.
 
 ## Finding tasks
 
-Enter `task <target>` to find tasks with names containing the search target.
+Enter `find <target>` to find tasks with names containing the search target.
 
 ## Handling invalid commands
 

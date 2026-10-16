@@ -62,12 +62,12 @@ public class TaskListTest {
         ClaraException exZero = assertThrows(ClaraException.class, () -> {
             taskList.getTask(0);
         });
-        assertEquals("Index out of bounds: given is 0", exZero.getMessage());
+        assertEquals("There is no task 0.", exZero.getMessage());
 
         ClaraException exNegative = assertThrows(ClaraException.class, () -> {
             taskList.getTask(-1);
         });
-        assertEquals("Index out of bounds: given is -1", exNegative.getMessage());
+        assertEquals("There is no task -1.", exNegative.getMessage());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class TaskListTest {
         ClaraException ex = assertThrows(ClaraException.class, () -> {
             taskList.getTask(2);
         });
-        assertEquals("Index out of bounds: given is 2", ex.getMessage());
+        assertEquals("There is no task 2.", ex.getMessage());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class TaskListTest {
         ClaraException ex = assertThrows(ClaraException.class, () -> {
             taskList.markTask(1);
         });
-        assertEquals("Index out of bounds: given is 1", ex.getMessage());
+        assertEquals("There is no task 1.", ex.getMessage());
     }
 
     @Test
@@ -139,7 +139,7 @@ public class TaskListTest {
         ClaraException ex = assertThrows(ClaraException.class, () -> {
             taskList.unmarkTask(1);
         });
-        assertEquals("Index out of bounds: given is 1", ex.getMessage());
+        assertEquals("There is no task 1.", ex.getMessage());
     }
 
     @Test
@@ -160,7 +160,7 @@ public class TaskListTest {
         ClaraException ex = assertThrows(ClaraException.class, () -> {
             taskList.deleteTask(1);
         });
-        assertEquals("Index out of bounds: given is 1", ex.getMessage());
+        assertEquals("There is no task 1.", ex.getMessage());
     }
 
     @Test
