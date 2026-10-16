@@ -11,6 +11,21 @@ left. The conversation scrolls automatically as new messages are added.
 Enter `bye` to display Clara's farewell and close the application. `bye` does not accept any
 additional text; for example, `bye later` is reported as an invalid command.
 
+## TL;DR — command summary
+
+| Command | What it does | Example |
+| --- | --- | --- |
+| `list` | Lists all tasks. | `list` |
+| `todo <description>` | Adds a task without a date or time. | `todo buy groceries` |
+| `deadline <description> /by <time>` | Adds a task due at a specified time. | `deadline submit report /by 2026-12-01 2359` |
+| `event <description> /from <start-time> /to <end-time>` | Adds a task with a start and end time. | `event team meeting /from 2026-12-02 1400 /to 2026-12-02 1500` |
+| `mark <task-number>` | Marks a task as done. | `mark 1` |
+| `unmark <task-number>` | Marks a task as not done. | `unmark 1` |
+| `priority <task-number> <priority>` | Changes a task's priority to `low`, `medium`, or `high`. | `priority 1 high` |
+| `delete <task-number>` | Removes a task. | `delete 1` |
+| `find <target>` | Finds tasks whose names contain the target text. | `find report` |
+| `bye` | Closes Clara. | `bye` |
+
 ## Listing tasks
 
 Enter `list` to display all added tasks in order.
@@ -26,6 +41,43 @@ Add a task using one of these commands:
 Times must be of the format `yyyy-MM-dd HHmm`. Internally they are also stored that way.
 
 The character `|` is reserved for Clara's save format and cannot be used in task details.
+
+## Example outputs
+
+The following examples show the text Clara displays in the GUI after common commands.
+
+```text
+You: todo buy groceries
+
+Clara:
+I've added this to your list:
+[ ] Medium buy groceries (task #1)
+```
+
+```text
+You: deadline submit report /by 2026-12-01 2359
+
+Clara:
+I've added this to your list:
+[D][ ] Medium submit report (by: Dec 01 2026, 11:59 PM) (task #2)
+```
+
+```text
+You: priority 1 high
+
+Clara:
+Changed priority of task 1:
+[ ] High buy groceries
+```
+
+```text
+You: list
+
+Clara:
+Here is what you have on your list:
+1. [ ] High buy groceries
+2. [D][ ] Medium submit report (by: Dec 01 2026, 11:59 PM)
+```
 
 ## Marking tasks as done
 
@@ -55,6 +107,26 @@ Enter `find <target>` to find tasks with names containing the search target.
 ## Handling invalid commands
 
 Clara explains invalid commands and inputs, then lets you try again. For example, `delete` without a valid task number displays the required command format.
+
+```text
+You: delete tomorrow
+
+Clara:
+I couldn't make sense of that:
+Use: delete <task number>.
+Please try again.
+```
+
+If the task number is valid in format but does not exist, Clara identifies the missing task.
+
+```text
+You: mark 99
+
+Clara:
+I couldn't make sense of that:
+There is no task 99.
+Please try again.
+```
 
 ## Exiting the app
 
